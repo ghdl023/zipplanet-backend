@@ -9,12 +9,8 @@ spring:
   output:
     ansi:
      enabled: always
-
-  datasource: #여기가 DB설정
-    url: jdbc:oracle:thin:@zipplanet_high?TNS_ADMIN=/Users/Wee/wallet/Wallet_zipplanet
-    username: admin
-    password: Zipplanet0329
-    driver-class:name: oracle.jdbc.OracleDriver
+  profiles:
+    include: oracle
 
 # mapper.xml 위치 명시
   # model 프로퍼티 camel case 설정
