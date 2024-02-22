@@ -1,6 +1,0 @@
-spring:
-  datasource: #여기가 DB설정
-    url: jdbc:oracle:thin:@zipplanet_high?TNS_ADMIN=./src/main/resources/OracleCloud
-    username: admin
-    password: Zipplanet0329
-    driver-class:name: oracle.jdbc.OracleDriver
