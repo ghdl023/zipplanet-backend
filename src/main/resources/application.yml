@@ -1,0 +1,34 @@
+server:
+  port: 8080
+spring:
+  devtools:
+    restart:
+      enabled: true # 소스파일에 변화가 있을 때 자동으로 서버 재 시작 설정
+    livereload:
+      enabled: true # 정적 리소스에 변화가 있을 때 바로 반영한다.
+  output:
+    ansi:
+     enabled: always
+
+  datasource: #여기가 DB설정
+    url: jdbc:oracle:thin:@zipplanet_high?TNS_ADMIN=/Users/Wee/wallet/Wallet_zipplanet
+    username: admin
+    password: Zipplanet0329
+    driver-class:name: oracle.jdbc.OracleDriver
+
+# mapper.xml 위치 명시
+  # model 프로퍼티 camel case 설정
+  # 매핑할 모델의 패키지 경로 (mybatis 매핑 type을 짧게 쓰기 위한 설정)
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+#  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.kh.zipplanet.model
+
+logging:
+  level:
+    com:
+      azurealstn:
+        codespringweb:
+          mapper: TRACE # mapper 로그레벨 설정
