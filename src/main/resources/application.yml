@@ -16,7 +16,7 @@ mybatis:
   mapper-locations: classpath:mapper/**/*.xml # mapper.xml 위치 명시
   configuration:
     map-underscore-to-camel-case: true # model 프로퍼티 camel case 설정
-  type-aliases-package: com.kh.zipplanet.model  # 매핑할 모델의 패키지 경로 (mybatis 매핑 type을 짧게 쓰기 위한 설정)
+  type-aliases-package: com.kh.zipplanet  # 매핑할 모델의 패키지 경로 (mybatis 매핑 type을 짧게 쓰기 위한 설정)
 
 logging:
   level:

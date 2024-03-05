@@ -1,15 +1,12 @@
-package com.kh.zipplanet.mapper;
+package com.kh.zipplanet.domain.user.mapper;
 
-import java.util.List;
-
+import com.kh.zipplanet.domain.user.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Repository;
 
-import com.kh.zipplanet.model.SalaryModel;
-
 @Repository
 @MapperScan
-public interface SalaryMapper {
-    List<SalaryModel> getSalary();
+public interface UserMapper {
+    User getUser();
 }
