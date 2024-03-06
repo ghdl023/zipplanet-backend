@@ -5,6 +5,14 @@
 
 <mapper namespace="com.kh.zipplanet.domain.user.mapper.UserMapper">
     <select id="getUser" resultType="com.kh.zipplanet.domain.user.model.User">
-        select * from users where account_id = 'test'
+        select * from users
+    </select>
+
+    <select id="login" resultType="com.kh.zipplanet.domain.user.model.User">
+        select *
+        from users
+        where 1=1
+        and account_id = #{id}
+        and account_pwd = #{pw}
     </select>
 </mapper>
