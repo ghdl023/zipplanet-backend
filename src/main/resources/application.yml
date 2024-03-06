@@ -18,6 +18,9 @@ mybatis:
     map-underscore-to-camel-case: true # model 프로퍼티 camel case 설정
   type-aliases-package: com.kh.zipplanet  # 매핑할 모델의 패키지 경로 (mybatis 매핑 type을 짧게 쓰기 위한 설정)
 
+jwt:
+  secret: eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTcwOTczMTg1MCwiaWF0IjoxNzA5NzMxODUwfQ.4i3K4yIdl-T7pk6aJHxRv5oVNNoL_khbnpTJhctc428
+
 logging:
   level:
     com:
