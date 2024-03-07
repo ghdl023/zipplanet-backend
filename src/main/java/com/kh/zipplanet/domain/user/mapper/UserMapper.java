@@ -12,7 +12,6 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     List<User> getUser();
-
     User getUserByUserId(@Param("userId") String userId);
     User getUserByUsername(@Param("username") String username);
 

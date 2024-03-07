@@ -30,13 +30,16 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers(
-                                "/api/user/*"
-                        )
-                        .permitAll()
-                )
-                .authorizeHttpRequests(request -> request.anyRequest().authenticated());
+//                .authorizeHttpRequests(request -> request
+//                        .requestMatchers(
+//                                "/api/*",
+//                                "/api/user/*",
+//                                "/api/review/*,"
+//                        )
+//                        .permitAll()
+//                )
+//                .authorizeHttpRequests(request -> request.anyRequest().authenticated());
+                .authorizeHttpRequests(request -> request.anyRequest().permitAll());
 
         return http.build();
     }
