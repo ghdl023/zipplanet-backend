@@ -18,9 +18,9 @@
         jibun,
         floors_count,
         pyung_count,
-        room_count,
+        room_info,
         room_option,
-        contract_id,
+        contract_type_id,
         start_date,
         end_date
         )
@@ -37,11 +37,18 @@
         #{jibun},
         #{floorsCount},
         #{pyungCount},
-        #{roomCount},
+        #{roomInfo},
         #{roomOption},
-        #{contractId},
+        #{contractTypeId},
         #{startDate},
         #{endDate}
         )
     </insert>
+
+    <select id="search" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+        select review_id, contract_type_id, user_id, jibun, pos, title, description, total_rate, trans_rate, manage_rate, infra_rate, life_rate, floors_count, pyung_count, start_date, end_date, room_info, room_option, create_date, update_date, like_count, view_count
+        from user_review
+        where 1=1
+        and pos = #{pos}
+    </select>
 </mapper>

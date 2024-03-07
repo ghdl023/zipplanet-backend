@@ -2,6 +2,8 @@ package com.kh.zipplanet.domain.review.model;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class ReviewCreateRequest {
     private int totalRate;
@@ -14,7 +16,9 @@ public class ReviewCreateRequest {
     private String jibun;
     private String floorsCount;
     private String pyungCount;
-    private String roomCount;
+    private String roomInfo;
     private String roomOption;
-    private String contractType = "1";
+    private String contractTypeId = "1";
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 }
