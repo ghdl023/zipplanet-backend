@@ -5,14 +5,49 @@
 
 <mapper namespace="com.kh.zipplanet.domain.user.mapper.UserMapper">
     <select id="getUser" resultType="com.kh.zipplanet.domain.user.model.User">
-        select * from users
+        select *
+        from users
+    </select>
+
+    <select id="getUserByUserId" resultType="com.kh.zipplanet.domain.user.model.User">
+        select user_id, username, nickname, phone, address, role_name, create_date, delete_date, delete_yn
+        from users join user_role on users.role_id = user_role.role_id
+        where 1=1
+        and user_id = #{userId}
+    </select>
+
+    <select id="getUserByUsername" resultType="com.kh.zipplanet.domain.user.model.User">
+        select user_id, username, nickname, phone, address, role_name, create_date, delete_date, delete_yn
+        from users join user_role on users.role_id = user_role.role_id
+        where 1=1
+        and username = #{username}
     </select>
 
     <select id="login" resultType="com.kh.zipplanet.domain.user.model.User">
-        select *
-        from users
+        select user_id, username, nickname, phone, address, role_name, create_date, delete_date, delete_yn
+        from users join user_role on users.role_id = user_role.role_id
         where 1=1
-        and account_id = #{id}
-        and account_pwd = #{pw}
+        and username = #{username}
+        and password = #{password}
     </select>
+
+    <insert id="signUp" parameterType="com.kh.zipplanet.domain.user.model.UserSignupRequest">
+        insert into users(user_id, username, password, nickname, address, phone)
+        values (
+            seq_userid.nextval,
+            #{username},
+            #{password},
+            #{nickname},
+            #{address},
+            #{phone}
+        )
+        <!-- not working... -->
+<!--        <selectKey keyProperty="user_id,username,nickname,phone,address,role_name,create_date,delete_date,delete_yn" keyColumn="user_id,username,nickname,phone,address,role_name,create_date,delete_date,delete_yn" resultType="com.kh.zipplanet.domain.user.model.UserSignupRequest"  order="AFTER">-->
+<!--            select user_id, username, nickname, phone, address, role_name, create_date, delete_date, delete_yn-->
+<!--            from users join user_role on users.role_id = user_role.role_id-->
+<!--            where 1=1-->
+<!--            and username = #{username}-->
+<!--            and password = #{password}-->
+<!--        </selectKey>-->
+    </insert>
 </mapper>
