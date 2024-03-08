@@ -2,7 +2,7 @@ package com.kh.zipplanet.domain.user.model;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 public class User {
@@ -12,7 +12,7 @@ public class User {
     private String nickname;
     private String phone;
     private String address;
-    private LocalDateTime createDate;
-    private LocalDateTime deleteDate;
+    private LocalDate createDate;
+    private LocalDate deleteDate;
     private char deleteYn;
 }

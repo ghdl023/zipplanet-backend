@@ -49,19 +49,43 @@ public class ReviewController {
 
     @GetMapping("/search")
     @ResponseBody
-    public ResponseEntity<CommonResponse> search(@RequestParam String lat, @RequestParam String lng) {
+    public ResponseEntity<CommonResponse> search(@RequestParam(value="pos") String pos) {
         CommonResponse response = new CommonResponse();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        System.out.println("lat:" + (lat+""));
-        System.out.println("lng:" + (lng+""));
-
         List<ReviewVo> reviewList = null;
-        String pos =  (lat+"") + "," + (lng+"");
         System.out.println("pos:" + pos);
         try {
             reviewList = reviewService.search(pos);
+        } catch(Exception e) {
+        }
+        System.out.println(reviewList);
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(reviewList);
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/searchByFilter")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> searchByFilter(@RequestParam(value="keyword", defaultValue = "") String keyword, @RequestParam(value="gu", defaultValue = "") String gu, @RequestParam(value="dong", defaultValue = "") String dong, @RequestParam(value="contractTypeId", defaultValue = "") String contractTypeId, @RequestParam(value="rate", defaultValue = "5") int rate, @RequestParam(value="sort", defaultValue = "LIKE_COUNT") String sort) {
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        List<ReviewVo> reviewList = null;
+        System.out.println("keyword:" + keyword);
+        System.out.println("gu:" + gu);
+        System.out.println("dong:" + dong);
+        System.out.println("contractTypeId:" + contractTypeId);
+        System.out.println("rate:" + rate);
+        System.out.println("sort:" + sort);
+
+        try {
+            reviewList = reviewService.searchByFilter(keyword, gu, dong, contractTypeId, rate, sort);
         } catch(Exception e) {
         }
         System.out.println(reviewList);

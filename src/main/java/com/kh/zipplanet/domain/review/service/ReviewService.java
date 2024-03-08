@@ -19,7 +19,10 @@ public class ReviewService {
     }
 
     public List<ReviewVo> search(String pos) {
-        System.out.println("서비스랍니다. " + pos);
         return reviewMapper.search(pos);
+    }
+
+    public List<ReviewVo> searchByFilter(String keyword, String gu, String dong, String contractTypeId, int rate, String sort) {
+        return reviewMapper.searchByFilter(keyword, gu, dong, contractTypeId, rate, sort);
     }
 }

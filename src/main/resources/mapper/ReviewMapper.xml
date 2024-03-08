@@ -16,6 +16,7 @@
         title,
         description,
         jibun,
+        pos,
         floors_count,
         pyung_count,
         room_info,
@@ -35,6 +36,7 @@
         #{title},
         #{description},
         #{jibun},
+        #{pos},
         #{floorsCount},
         #{pyungCount},
         #{roomInfo},
@@ -50,5 +52,36 @@
         from user_review
         where 1=1
         and pos = #{pos}
+    </select>
+
+    <select id="searchByFilter" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+        select review_id, contract_type_id, user_id, jibun, pos, title, description, total_rate, trans_rate, manage_rate, infra_rate, life_rate, floors_count, pyung_count, start_date, end_date, room_info, room_option, create_date, update_date, like_count, view_count
+        from user_review
+        where 1=1
+        <choose>
+            <when test="keyword != null and keyword != ''">
+                and jibun like '%' || #{keyword} || '%'
+                order by #{sort} desc
+            </when>
+            <otherwise>
+                <choose>
+                    <when test="gu != null and gu != ''">
+                        and jibun like '%' || #{gu} || '%'
+                    </when>
+                </choose>
+                <choose>
+                    <when test="dong != null and dong != ''">
+                        and jibun like '%' || #{dong} || '%'
+                    </when>
+                </choose>
+                <choose>
+                    <when test="contractTypeId != null and contractTypeId != ''">
+                        and contract_type_id = #{contractTypeId}
+                    </when>
+                </choose>
+                and total_rate between 0 and #{rate}
+                order by ${sort} desc
+            </otherwise>
+        </choose>
     </select>
 </mapper>

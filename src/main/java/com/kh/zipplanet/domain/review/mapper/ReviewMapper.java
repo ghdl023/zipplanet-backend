@@ -15,4 +15,6 @@ public interface ReviewMapper {
     int create(ReviewCreateRequest reviewCreateRequest);
 
     List<ReviewVo> search(@Param("pos") String pos);
+
+    List<ReviewVo> searchByFilter(@Param("keyword") String keyword, @Param("gu") String gu, @Param("dong") String dong, @Param("contractTypeId") String contractTypeId, @Param("rate") int rate, @Param("sort") String sort);
 }
