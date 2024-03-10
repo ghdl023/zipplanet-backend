@@ -47,41 +47,117 @@
         )
     </insert>
 
-    <select id="search" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        select review_id, contract_type_id, user_id, jibun, pos, title, description, total_rate, trans_rate, manage_rate, infra_rate, life_rate, floors_count, pyung_count, start_date, end_date, room_info, room_option, create_date, update_date, like_count, view_count
-        from user_review
-        where 1=1
-        and pos = #{pos}
+    <select id="searchByPos" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+        SELECT *
+        FROM (
+        SELECT a.*, ROWNUM as rnum
+        FROM (
+        SELECT *
+        FROM user_review
+        WHERE 1=1
+        AND pos = #{pos}
+        ORDER BY #{sort} DESC
+        )
+        a)
+        WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
+    </select>
+
+    <select id="searchByPosTotalCount">
+        SELECT COUNT(*)
+        FROM (
+        SELECT a.*, ROWNUM as rnum
+        FROM (
+        SELECT *
+        FROM user_review
+        WHERE 1=1
+        AND pos = #{pos}
+        ORDER BY #{sort} DESC
+        )
+        a)
+    </select>
+
+    <select id="searchByKeyword" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+        SELECT *
+        FROM (
+        SELECT a.*, ROWNUM as rnum FROM (
+        SELECT *
+        FROM user_review
+        WHERE 1=1
+        AND jibun like '%' || #{keyword} || '%'
+        ORDER BY #{sort} DESC
+        )
+        a)
+        WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
+    </select>
+
+    <select id="searchByKeywordTotalCount">
+        SELECT COUNT(*)
+        FROM (
+        SELECT a.*, ROWNUM as rnum FROM (
+        SELECT *
+        FROM user_review
+        WHERE 1=1
+        AND jibun like '%' || #{keyword} || '%'
+        ORDER BY #{sort} DESC
+        )
+        a)
     </select>
 
     <select id="searchByFilter" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        select review_id, contract_type_id, user_id, jibun, pos, title, description, total_rate, trans_rate, manage_rate, infra_rate, life_rate, floors_count, pyung_count, start_date, end_date, room_info, room_option, create_date, update_date, like_count, view_count
-        from user_review
-        where 1=1
+        SELECT *
+        FROM (
+        SELECT a.*, ROWNUM as rnum FROM (
+        SELECT *
+        FROM user_review
+        WHERE 1=1
         <choose>
-            <when test="keyword != null and keyword != ''">
-                and jibun like '%' || #{keyword} || '%'
-                order by #{sort} desc
+            <when test="gu != null and gu != ''">
+                AND jibun like '%' || #{gu} || '%'
             </when>
-            <otherwise>
-                <choose>
-                    <when test="gu != null and gu != ''">
-                        and jibun like '%' || #{gu} || '%'
-                    </when>
-                </choose>
-                <choose>
-                    <when test="dong != null and dong != ''">
-                        and jibun like '%' || #{dong} || '%'
-                    </when>
-                </choose>
-                <choose>
-                    <when test="contractTypeId != null and contractTypeId != ''">
-                        and contract_type_id = #{contractTypeId}
-                    </when>
-                </choose>
-                and total_rate between 0 and #{rate}
-                order by ${sort} desc
-            </otherwise>
         </choose>
+        <choose>
+            <when test="dong != null and dong != ''">
+                AND jibun like '%' || #{dong} || '%'
+            </when>
+        </choose>
+        <choose>
+            <when test="contractTypeId != null and contractTypeId != ''">
+                AND contract_type_id = #{contractTypeId}
+            </when>
+        </choose>
+        AND total_rate between 0 and #{rate}
+        ORDER BY #{sort} DESC
+        )
+        a)
+        WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
     </select>
-</mapper>
+
+    <select id="searchByFilterTotalCount" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+        SELECT COUNT(*)
+        FROM (
+        SELECT a.*, ROWNUM as rnum FROM (
+        SELECT *
+        FROM user_review
+        WHERE 1=1
+        <choose>
+            <when test="gu != null and gu != ''">
+                AND jibun like '%' || #{gu} || '%'
+            </when>
+        </choose>
+        <choose>
+            <when test="dong != null and dong != ''">
+                AND jibun like '%' || #{dong} || '%'
+            </when>
+        </choose>
+        <choose>
+            <when test="contractTypeId != null and contractTypeId != ''">
+                AND contract_type_id = #{contractTypeId}
+            </when>
+        </choose>
+        AND total_rate between 0 and #{rate}
+        ORDER BY #{sort} DESC
+        )
+        a)
+        WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
+    </select>
+    </mapper>

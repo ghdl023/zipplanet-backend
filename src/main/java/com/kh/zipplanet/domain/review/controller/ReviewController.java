@@ -1,6 +1,7 @@
 package com.kh.zipplanet.domain.review.controller;
 
 import com.kh.zipplanet.domain.review.model.ReviewCreateRequest;
+import com.kh.zipplanet.domain.review.model.ReviewListPagingResponse;
 import com.kh.zipplanet.domain.review.model.ReviewVo;
 import com.kh.zipplanet.domain.review.service.ReviewService;
 import com.kh.zipplanet.global.common.CommonResponse;
@@ -49,50 +50,50 @@ public class ReviewController {
 
     @GetMapping("/search")
     @ResponseBody
-    public ResponseEntity<CommonResponse> search(@RequestParam(value="pos") String pos) {
+    public ResponseEntity<CommonResponse> searchV2(
+            @RequestParam(value="searchType") String searchType,
+            @RequestParam(value="keyword", defaultValue = "") String keyword,
+            @RequestParam(value="gu", defaultValue = "") String gu,
+            @RequestParam(value="dong", defaultValue = "") String dong,
+            @RequestParam(value="contractTypeId", defaultValue = "") String contractTypeId,
+            @RequestParam(value="rate", defaultValue = "5") int rate,
+            @RequestParam(value="pos") String pos,
+            @RequestParam(value="sort", defaultValue = "LIKE_COUNT") String sort,
+            @RequestParam(value="offset") int offset,
+            @RequestParam(value="limit", defaultValue="2") int limit
+    ) {
         CommonResponse response = new CommonResponse();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        List<ReviewVo> reviewList = null;
-        System.out.println("pos:" + pos);
-        try {
-            reviewList = reviewService.search(pos);
-        } catch(Exception e) {
-        }
-        System.out.println(reviewList);
-
-        response.setStatus(StatusEnum.OK);
-        response.setMessage("success");
-        response.setData(reviewList);
-
-        return new ResponseEntity<>(response, headers, HttpStatus.OK);
-    }
-
-    @GetMapping("/searchByFilter")
-    @ResponseBody
-    public ResponseEntity<CommonResponse> searchByFilter(@RequestParam(value="keyword", defaultValue = "") String keyword, @RequestParam(value="gu", defaultValue = "") String gu, @RequestParam(value="dong", defaultValue = "") String dong, @RequestParam(value="contractTypeId", defaultValue = "") String contractTypeId, @RequestParam(value="rate", defaultValue = "5") int rate, @RequestParam(value="sort", defaultValue = "LIKE_COUNT") String sort) {
-        CommonResponse response = new CommonResponse();
-        HttpHeaders headers= new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        List<ReviewVo> reviewList = null;
+        System.out.println("searchType:" + searchType);
         System.out.println("keyword:" + keyword);
         System.out.println("gu:" + gu);
         System.out.println("dong:" + dong);
         System.out.println("contractTypeId:" + contractTypeId);
         System.out.println("rate:" + rate);
+        System.out.println("pos:" + pos);
         System.out.println("sort:" + sort);
+        System.out.println("offset:" + offset);
+        System.out.println("limit:" + limit);
 
+        List<ReviewVo> reviewList = null;
+        int totalCount = 0;
         try {
-            reviewList = reviewService.searchByFilter(keyword, gu, dong, contractTypeId, rate, sort);
+            reviewList = reviewService.search(searchType, keyword, gu, dong, contractTypeId, rate, pos, sort, offset, limit);
+            totalCount = reviewService.searchTotalCount(searchType, keyword, gu, dong, contractTypeId, rate, pos, sort, offset, limit);
+            System.out.println(totalCount);
         } catch(Exception e) {
         }
         System.out.println(reviewList);
 
+        ReviewListPagingResponse pagingresponse = new ReviewListPagingResponse();
+        pagingresponse.setReviews(reviewList);
+        pagingresponse.setTotalCount(totalCount);
+
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
-        response.setData(reviewList);
+        response.setData(pagingresponse);
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
