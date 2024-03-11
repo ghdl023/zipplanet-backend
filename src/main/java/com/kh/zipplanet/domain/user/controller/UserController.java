@@ -120,13 +120,12 @@ public class UserController {
             System.out.println(e);
         }
 
-        if(user == null) {
-            response.setMessage("일치하는 유저가 없습니다. 아이디,패스워드를 다시 확인해주세요.");
-        }
-
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
         response.setData(user);
+        if(user == null) {
+            response.setMessage("일치하는 유저가 없습니다. 아이디,패스워드를 다시 확인해주세요.");
+        }
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
