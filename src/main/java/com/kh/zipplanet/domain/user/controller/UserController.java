@@ -105,6 +105,9 @@ public class UserController {
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
+
+    @PostMapping("/findId")
+    @ResponseBody
     public ResponseEntity<CommonResponse> findId(@RequestBody UserFindIdRequest userFindIdRequest){
         CommonResponse response = new CommonResponse();
         HttpHeaders headers= new HttpHeaders();
@@ -120,6 +123,10 @@ public class UserController {
         if(user == null) {
             response.setMessage("일치하는 유저가 없습니다. 아이디,패스워드를 다시 확인해주세요.");
         }
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(user);
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
