@@ -1,8 +1,6 @@
 package com.kh.zipplanet.domain.review.controller;
 
-import com.kh.zipplanet.domain.review.model.ReviewCreateRequest;
-import com.kh.zipplanet.domain.review.model.ReviewListPagingResponse;
-import com.kh.zipplanet.domain.review.model.ReviewVo;
+import com.kh.zipplanet.domain.review.model.*;
 import com.kh.zipplanet.domain.review.service.ReviewService;
 import com.kh.zipplanet.global.common.CommonResponse;
 import com.kh.zipplanet.global.common.StatusEnum;
@@ -94,6 +92,52 @@ public class ReviewController {
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
         response.setData(pagingresponse);
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/update")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> update(@RequestBody ReviewUpdateRequest reviewUpdateRequest) {
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+//        System.out.println(reviewUpdateRequest);
+
+        int result = 0;
+        try {
+            result = reviewService.update(reviewUpdateRequest);
+        } catch(Exception e) {
+        }
+        System.out.println(result);
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(null);
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> delete(@RequestBody ReviewDeleteRequest reviewDeleteRequest) {
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+//        System.out.println(reviewUpdateRequest);
+
+        int result = 0;
+        try {
+            result = reviewService.delete(reviewDeleteRequest);
+        } catch(Exception e) {
+        }
+        System.out.println(result);
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(null);
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }

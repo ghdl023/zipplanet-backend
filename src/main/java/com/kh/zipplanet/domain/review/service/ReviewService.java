@@ -2,6 +2,8 @@ package com.kh.zipplanet.domain.review.service;
 
 import com.kh.zipplanet.domain.review.mapper.ReviewMapper;
 import com.kh.zipplanet.domain.review.model.ReviewCreateRequest;
+import com.kh.zipplanet.domain.review.model.ReviewDeleteRequest;
+import com.kh.zipplanet.domain.review.model.ReviewUpdateRequest;
 import com.kh.zipplanet.domain.review.model.ReviewVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,5 +38,13 @@ public class ReviewService {
         } else {
             return reviewMapper.searchByFilterTotalCount(gu, dong, contractTypeId, rate, sort, offset, limit);
         }
+    }
+
+    public int update(ReviewUpdateRequest reviewUpdateRequest) {
+        return reviewMapper.update(reviewUpdateRequest);
+    }
+
+    public int delete(ReviewDeleteRequest reviewDeleteRequest) {
+        return reviewMapper.delete(reviewDeleteRequest);
     }
 }

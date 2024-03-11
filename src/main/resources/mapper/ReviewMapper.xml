@@ -160,4 +160,37 @@
         a)
         WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
     </select>
-    </mapper>
+
+    <update id="update">
+        UPDATE user_review
+        SET
+            total_rate = #{totalRate},
+            trans_rate = #{transRate},
+            manage_rate = #{manageRate},
+            infra_rate = #{infraRate},
+            life_rate = #{lifeRate},
+            title = #{title},
+            description = #{description},
+            jibun = #{jibun},
+            pos = #{pos},
+            floors_count = #{floorsCount},
+            pyung_count = #{pyungCount},
+            room_info = #{roomInfo},
+            room_option = #{roomOption},
+            contract_type_id = #{contractTypeId},
+            start_date = #{startDate},
+            end_date = #{endDate}
+        WHERE 1=1
+        AND review_id = #{reviewId}
+        AND user_id = #{userId}
+    </update>
+
+    <update id="delete">
+        UPDATE user_review
+        SET
+            delete_yn = 'Y'
+        WHERE 1=1
+        AND review_id = #{reviewId}
+        AND user_id = #{userId}
+    </update>
+</mapper>
