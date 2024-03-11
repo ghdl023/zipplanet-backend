@@ -16,8 +16,8 @@ public class ReviewService {
     @Autowired
     ReviewMapper reviewMapper;
 
-    public int create(ReviewCreateRequest reviewCreateRequest) {
-        return reviewMapper.create(reviewCreateRequest);
+    public int createReview(ReviewCreateRequest reviewCreateRequest) {
+        return reviewMapper.createReview(reviewCreateRequest);
     }
 
     public List<ReviewVo> search(String searchType, String keyword, String gu, String dong, String contractTypeId, int rate, String pos, String sort, int offset, int limit) {
@@ -40,11 +40,11 @@ public class ReviewService {
         }
     }
 
-    public int update(ReviewUpdateRequest reviewUpdateRequest) {
-        return reviewMapper.update(reviewUpdateRequest);
+    public int updateReview(ReviewUpdateRequest reviewUpdateRequest) {
+        return reviewMapper.updateReview(reviewUpdateRequest);
     }
 
-    public int delete(ReviewDeleteRequest reviewDeleteRequest) {
-        return reviewMapper.delete(reviewDeleteRequest);
+    public int deleteReview(ReviewDeleteRequest reviewDeleteRequest) {
+        return reviewMapper.deleteReview(reviewDeleteRequest);
     }
 }

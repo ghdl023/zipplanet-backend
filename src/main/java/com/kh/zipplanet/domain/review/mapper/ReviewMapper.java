@@ -14,7 +14,7 @@ import java.util.List;
 @Mapper
 public interface ReviewMapper {
 
-    int create(@Param("reviewCreateRequest") ReviewCreateRequest reviewCreateRequest);
+    int createReview(@Param("reviewCreateRequest") ReviewCreateRequest reviewCreateRequest);
 
     List<ReviewVo> searchByPos(@Param("pos") String pos, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit);
     int searchByPosTotalCount(@Param("pos") String pos, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit);
@@ -23,7 +23,7 @@ public interface ReviewMapper {
     List<ReviewVo> searchByFilter(@Param("gu") String gu, @Param("dong") String dong, @Param("contractTypeId") String contractTypeId, @Param("rate") int rate, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit);
     int searchByFilterTotalCount(@Param("gu") String gu, @Param("dong") String dong, @Param("contractTypeId") String contractTypeId, @Param("rate") int rate, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit);
 
-    int update(ReviewUpdateRequest reviewUpdateRequest);
+    int updateReview(@Param("reviewUpdateRequest") ReviewUpdateRequest reviewUpdateRequest);
 
-    int delete(ReviewDeleteRequest reviewDeleteRequest);
+    int deleteReview(@Param("reviewDeleteRequest") ReviewDeleteRequest reviewDeleteRequest);
 }

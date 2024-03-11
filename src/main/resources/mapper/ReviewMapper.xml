@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kh.zipplanet.domain.review.mapper.ReviewMapper">
-    <insert id="create" parameterType="map">
+    <insert id="createReview" parameterType="map">
         INSERT INTO user_review(
             review_id, user_id, total_rate, trans_rate, manage_rate, infra_rate, life_rate, title, description, jibun,
             pos, floors_count, pyung_count, room_info, room_option, contract_type_id, start_date, end_date
@@ -151,36 +151,64 @@
         WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
     </select>
 
-    <update id="update">
+    <update id="updateReview" parameterType="map">
         UPDATE user_review
         SET
-            total_rate = #{totalRate},
-            trans_rate = #{transRate},
-            manage_rate = #{manageRate},
-            infra_rate = #{infraRate},
-            life_rate = #{lifeRate},
-            title = #{title},
-            description = #{description},
-            jibun = #{jibun},
-            pos = #{pos},
-            floors_count = #{floorsCount},
-            pyung_count = #{pyungCount},
-            room_info = #{roomInfo},
-            room_option = #{roomOption},
-            contract_type_id = #{contractTypeId},
-            start_date = #{startDate},
-            end_date = #{endDate}
+            total_rate = 5,
+            trans_rate = 4,
+            manage_rate = 3,
+            infra_rate = 2,
+            life_rate = 1,
+            title = '제목333333333333333',
+            description = '내용33333333',
+            jibun = '주소',
+            pos = '좌표',
+            floors_count = '10',
+            pyung_count = '30',
+            room_info = 'ㅋㅋㅋㅋㅋ',
+            room_option = 'ㅇㅇㅇㅇ',
+            contract_type_id = '1',
+            start_date ='2024-10-05',
+            end_date ='2024-12-11'
         WHERE 1=1
-        AND review_id = #{reviewId}
-        AND user_id = #{userId}
+        AND review_id = 10009
+        AND user_id = 10000
+<!--        UPDATE user_review-->
+<!--        SET-->
+<!--            total_rate = #{reviewUpdateRequest.totalRate},-->
+<!--            trans_rate = #{reviewUpdateRequest.transRate},-->
+<!--            manage_rate = #{reviewUpdateRequest.manageRate},-->
+<!--            infra_rate = #{reviewUpdateRequest.infraRate},-->
+<!--            life_rate = #{reviewUpdateRequest.lifeRate},-->
+<!--            title = #{reviewUpdateRequest.title},-->
+<!--            description = #{reviewUpdateRequest.description},-->
+<!--            jibun = #{reviewUpdateRequest.jibun},-->
+<!--            pos = #{reviewUpdateRequest.pos},-->
+<!--            floors_count = #{reviewUpdateRequest.floorsCount},-->
+<!--            pyung_count = #{reviewUpdateRequest.pyungCount},-->
+<!--            room_info = #{reviewUpdateRequest.roomInfo},-->
+<!--            room_option = #{reviewUpdateRequest.roomOption},-->
+<!--            contract_type_id = #{reviewUpdateRequest.contractTypeId},-->
+<!--            start_date = #{reviewUpdateRequest.startDate},-->
+<!--            <choose>-->
+<!--                <when test="reviewUpdateRequest.endDate !=null and !reviewUpdateRequest.endDate.equals('')">-->
+<!--                    end_date = #{reviewUpdateRequest.endDate}-->
+<!--                </when>-->
+<!--                <otherwise>-->
+<!--                    end_date = ''-->
+<!--                </otherwise>-->
+<!--            </choose>-->
+<!--        WHERE 1=1-->
+<!--        AND review_id = #{reviewUpdateRequest.reviewId}-->
+<!--        AND user_id = #{reviewUpdateRequest.userId}-->
     </update>
 
-    <update id="delete">
+    <update id="deleteReview" parameterType="map">
         UPDATE user_review
         SET
             delete_yn = 'Y'
         WHERE 1=1
-        AND review_id = #{reviewId}
-        AND user_id = #{userId}
+        AND review_id = #{reviewDeleteRequest.reviewId}
+        AND user_id = #{reviewDeleteRequest.userId}
     </update>
 </mapper>

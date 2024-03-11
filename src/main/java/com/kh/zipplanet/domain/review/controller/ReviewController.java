@@ -52,7 +52,7 @@ public class ReviewController {
 
         int result = 0;
         try {
-            result = reviewService.create(reviewCreateRequest);
+            result = reviewService.createReview(reviewCreateRequest);
         } catch(Exception e) {
         }
         System.out.println(result);
@@ -122,18 +122,18 @@ public class ReviewController {
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-//        System.out.println(reviewUpdateRequest);
+        System.out.println(reviewUpdateRequest);
 
         int result = 0;
         try {
-            result = reviewService.update(reviewUpdateRequest);
+            result = reviewService.updateReview(reviewUpdateRequest);
         } catch(Exception e) {
         }
         System.out.println(result);
 
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
-        response.setData(null);
+        response.setData(result);
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
@@ -149,14 +149,14 @@ public class ReviewController {
 
         int result = 0;
         try {
-            result = reviewService.delete(reviewDeleteRequest);
+            result = reviewService.deleteReview(reviewDeleteRequest);
         } catch(Exception e) {
         }
         System.out.println(result);
 
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
-        response.setData(null);
+        response.setData(result);
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
