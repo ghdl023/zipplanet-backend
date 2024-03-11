@@ -24,3 +24,13 @@ logging:
       azurealstn:
         codespringweb:
           mapper: TRACE # mapper 로그레벨 설정
+
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      enabled: true
