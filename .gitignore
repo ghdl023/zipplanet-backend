@@ -38,3 +38,8 @@ out/
 
 application-oracle.yml
 !**/src/resources/OracleCloud/
+
+...
+
+application-oracle.yml
+!**/src/resources/OracleCloud/

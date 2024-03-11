@@ -2,6 +2,7 @@ package com.kh.zipplanet.domain.user.service;
 
 import com.kh.zipplanet.domain.user.mapper.UserMapper;
 import com.kh.zipplanet.domain.user.model.User;
+import com.kh.zipplanet.domain.user.model.UserFindIdRequest;
 import com.kh.zipplanet.domain.user.model.UserLoginRequest;
 import com.kh.zipplanet.domain.user.model.UserSignupRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,9 @@ public class UserService {
 
     public int signUp(UserSignupRequest userSignupRequest) throws Exception {
         return mapper.signUp(userSignupRequest);
+    }
+
+    public User findId(UserFindIdRequest userFindIdRequest) throws Exception {
+        return mapper.findId(userFindIdRequest.getPhone());
     }
 }

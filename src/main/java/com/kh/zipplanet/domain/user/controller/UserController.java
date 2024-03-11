@@ -1,6 +1,7 @@
 package com.kh.zipplanet.domain.user.controller;
 
 import com.kh.zipplanet.domain.user.model.User;
+import com.kh.zipplanet.domain.user.model.UserFindIdRequest;
 import com.kh.zipplanet.domain.user.model.UserLoginRequest;
 import com.kh.zipplanet.domain.user.model.UserSignupRequest;
 import com.kh.zipplanet.domain.user.service.UserService;
@@ -100,6 +101,24 @@ public class UserController {
         response.setData(user);
         if(user == null) {
             response.setMessage("회원가입을 실패했습니다.");
+        }
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+    public ResponseEntity<CommonResponse> findId(@RequestBody UserFindIdRequest userFindIdRequest){
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        User user = null;
+        try {
+            user = userService.findId(userFindIdRequest);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        if(user == null) {
+            response.setMessage("일치하는 유저가 없습니다. 아이디,패스워드를 다시 확인해주세요.");
         }
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
