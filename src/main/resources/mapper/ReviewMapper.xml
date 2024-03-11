@@ -4,46 +4,36 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kh.zipplanet.domain.review.mapper.ReviewMapper">
-    <insert id="create" parameterType="com.kh.zipplanet.domain.review.model.ReviewCreateRequest">
-        insert into user_review(
-        review_id,
-        user_id,
-        total_rate,
-        trans_rate,
-        manage_rate,
-        infra_rate,
-        life_rate,
-        title,
-        description,
-        jibun,
-        pos,
-        floors_count,
-        pyung_count,
-        room_info,
-        room_option,
-        contract_type_id,
-        start_date,
-        end_date
-        )
-        values (
-        seq_reviewid.nextval,
-        #{userId},
-        #{totalRate},
-        #{transRate},
-        #{manageRate},
-        #{infraRate},
-        #{lifeRate},
-        #{title},
-        #{description},
-        #{jibun},
-        #{pos},
-        #{floorsCount},
-        #{pyungCount},
-        #{roomInfo},
-        #{roomOption},
-        #{contractTypeId},
-        #{startDate},
-        #{endDate}
+    <insert id="create" parameterType="map">
+        INSERT INTO user_review(
+            review_id, user_id, total_rate, trans_rate, manage_rate, infra_rate, life_rate, title, description, jibun,
+            pos, floors_count, pyung_count, room_info, room_option, contract_type_id, start_date, end_date
+        ) VALUES (
+            SEQ_REVIEWID.NEXTVAL,
+            #{reviewCreateRequest.userId},
+            #{reviewCreateRequest.totalRate},
+            #{reviewCreateRequest.transRate},
+            #{reviewCreateRequest.manageRate},
+            #{reviewCreateRequest.infraRate},
+            #{reviewCreateRequest.lifeRate},
+            #{reviewCreateRequest.title},
+            #{reviewCreateRequest.description},
+            #{reviewCreateRequest.jibun},
+            #{reviewCreateRequest.pos},
+            #{reviewCreateRequest.floorsCount},
+            #{reviewCreateRequest.pyungCount},
+            #{reviewCreateRequest.roomInfo},
+            #{reviewCreateRequest.roomOption},
+            #{reviewCreateRequest.contractTypeId},
+            #{reviewCreateRequest.startDate},
+            <choose>
+                <when test="reviewCreateRequest.endDate !=null and !reviewCreateRequest.endDate.equals('')">
+                    #{reviewCreateRequest.endDate}
+                </when>
+                <otherwise>
+                    null
+                </otherwise>
+            </choose>
         )
     </insert>
 

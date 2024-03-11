@@ -14,7 +14,7 @@ import java.util.List;
 @Mapper
 public interface ReviewMapper {
 
-    int create(ReviewCreateRequest reviewCreateRequest);
+    int create(@Param("reviewCreateRequest") ReviewCreateRequest reviewCreateRequest);
 
     List<ReviewVo> searchByPos(@Param("pos") String pos, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit);
     int searchByPosTotalCount(@Param("pos") String pos, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit);

@@ -29,7 +29,26 @@ public class ReviewController {
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
+//        System.out.println("create review !");
 //        System.out.println(reviewCreateRequest);
+
+//        System.out.println("userId : " + reviewCreateRequest.getUserId());
+//        System.out.println("totalRate : " + reviewCreateRequest.getTotalRate());
+//        System.out.println("transRate : " + reviewCreateRequest.getTransRate());
+//        System.out.println("infraRate : " + reviewCreateRequest.getInfraRate());
+//        System.out.println("manageRate : " + reviewCreateRequest.getManageRate());
+//        System.out.println("lifeRate : " + reviewCreateRequest.getLifeRate());
+//        System.out.println("title : " + reviewCreateRequest.getTitle());
+//        System.out.println("description : " + reviewCreateRequest.getDescription());
+//        System.out.println("jibun : " + reviewCreateRequest.getJibun());
+//        System.out.println("pos : " + reviewCreateRequest.getPos());
+//        System.out.println("floorsCount : " + reviewCreateRequest.getFloorsCount());
+//        System.out.println("pyungCount : " + reviewCreateRequest.getPyungCount());
+//        System.out.println("roomInfo : " + reviewCreateRequest.getRoomInfo());
+//        System.out.println("roomOption : " + reviewCreateRequest.getRoomOption());
+//        System.out.println("contractTypeId : " + reviewCreateRequest.getContractTypeId());
+//        System.out.println("startDate : " + reviewCreateRequest.getStartDate());
+//        System.out.println("endDate : " + reviewCreateRequest.getEndDate());
 
         int result = 0;
         try {
@@ -40,7 +59,7 @@ public class ReviewController {
 
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
-        response.setData(null);
+        response.setData(result);
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
 
