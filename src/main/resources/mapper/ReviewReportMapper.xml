@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.zipplanet.domain.review.mapper.ReviewReportMapper">
+    <insert id="reportReview" parameterType="map">
+        INSERT INTO user_review_report_log(
+            report_id,
+            review_id,
+            user_id,
+            report_type_id,
+            solve_yn,
+            create_date
+        ) VALUES (
+            SEQ_REPORTID.NEXTVAL,
+            #{reviewReportRequest.reviewId},
+            #{reviewReportRequest.userId},
+            #{reviewReportRequest.reportTypeId},
+            'Y',
+            SYSDATE
+        )
+    </insert>
+
+    <select id="findByReviewIdAndUserId" resultType="int">
+            SELECT COUNT(*)
+            FROM user_review_report_log
+            WHERE 1=1
+            AND review_id = #{reviewId}
+            AND user_id = #{userId}
+    </select>
+</mapper>

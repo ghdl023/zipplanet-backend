@@ -1,6 +1,7 @@
 package com.kh.zipplanet.domain.review.controller;
 
 import com.kh.zipplanet.domain.review.model.*;
+import com.kh.zipplanet.domain.review.service.ReviewReportService;
 import com.kh.zipplanet.domain.review.service.ReviewService;
 import com.kh.zipplanet.global.common.CommonResponse;
 import com.kh.zipplanet.global.common.StatusEnum;
@@ -21,6 +22,9 @@ public class ReviewController {
 
     @Autowired
     ReviewService reviewService;
+
+    @Autowired
+    ReviewReportService reviewReportService;
 
     @PostMapping("/create")
     @ResponseBody
@@ -150,6 +154,37 @@ public class ReviewController {
         int result = 0;
         try {
             result = reviewService.deleteReview(reviewDeleteRequest);
+        } catch(Exception e) {
+        }
+        System.out.println(result);
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(result);
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/report")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> report(@RequestBody ReviewReportRequest reviewReportRequest) {
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+//        System.out.println(reviewUpdateRequest);
+
+        int result = 0;
+        try {
+            if(reviewReportService.findByReviewIdAndUserId(reviewReportRequest) > 0) { // 이미 신고내역 있는 경우
+                response.setStatus(StatusEnum.OK);
+                response.setMessage("이미 신고한 리뷰입니다.");
+                response.setData(null);
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+
+            } else { // 신고내역 없는 경우
+                result = reviewReportService.reportReview(reviewReportRequest);
+            }
         } catch(Exception e) {
         }
         System.out.println(result);
