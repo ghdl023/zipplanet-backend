@@ -46,6 +46,7 @@
         FROM user_review
         WHERE 1=1
         AND pos = #{pos}
+        AND delete_yn = 'N'
         ORDER BY #{sort} DESC
         )
         a)
@@ -61,6 +62,7 @@
         FROM user_review
         WHERE 1=1
         AND pos = #{pos}
+        AND delete_yn = 'N'
         ORDER BY #{sort} DESC
         )
         a)
@@ -74,6 +76,7 @@
         FROM user_review
         WHERE 1=1
         AND jibun like '%' || #{keyword} || '%'
+        AND delete_yn = 'N'
         ORDER BY #{sort} DESC
         )
         a)
@@ -88,6 +91,7 @@
         FROM user_review
         WHERE 1=1
         AND jibun like '%' || #{keyword} || '%'
+        AND delete_yn = 'N'
         ORDER BY #{sort} DESC
         )
         a)
@@ -116,6 +120,7 @@
             </when>
         </choose>
         AND total_rate between 0 and #{rate}
+        AND delete_yn = 'N'
         ORDER BY #{sort} DESC
         )
         a)
@@ -145,6 +150,7 @@
             </when>
         </choose>
         AND total_rate between 0 and #{rate}
+        AND delete_yn = 'N'
         ORDER BY #{sort} DESC
         )
         a)
@@ -154,53 +160,32 @@
     <update id="updateReview" parameterType="map">
         UPDATE user_review
         SET
-            total_rate = 5,
-            trans_rate = 4,
-            manage_rate = 3,
-            infra_rate = 2,
-            life_rate = 1,
-            title = '제목333333333333333',
-            description = '내용33333333',
-            jibun = '주소',
-            pos = '좌표',
-            floors_count = '10',
-            pyung_count = '30',
-            room_info = 'ㅋㅋㅋㅋㅋ',
-            room_option = 'ㅇㅇㅇㅇ',
-            contract_type_id = '1',
-            start_date ='2024-10-05',
-            end_date ='2024-12-11'
+            total_rate = #{reviewUpdateRequest.totalRate},
+            trans_rate = #{reviewUpdateRequest.transRate},
+            manage_rate = #{reviewUpdateRequest.manageRate},
+            infra_rate = #{reviewUpdateRequest.infraRate},
+            life_rate = #{reviewUpdateRequest.lifeRate},
+            title = #{reviewUpdateRequest.title},
+            description = #{reviewUpdateRequest.description},
+            jibun = #{reviewUpdateRequest.jibun},
+            pos = #{reviewUpdateRequest.pos},
+            floors_count = #{reviewUpdateRequest.floorsCount},
+            pyung_count = #{reviewUpdateRequest.pyungCount},
+            room_info = #{reviewUpdateRequest.roomInfo},
+            room_option = #{reviewUpdateRequest.roomOption},
+            contract_type_id = #{reviewUpdateRequest.contractTypeId},
+            start_date = #{reviewUpdateRequest.startDate},
+            <choose>
+                <when test="reviewUpdateRequest.endDate !=null and !reviewUpdateRequest.endDate.equals('')">
+                    end_date = #{reviewUpdateRequest.endDate}
+                </when>
+                <otherwise>
+                    end_date = ''
+                </otherwise>
+            </choose>
         WHERE 1=1
-        AND review_id = 10009
-        AND user_id = 10000
-<!--        UPDATE user_review-->
-<!--        SET-->
-<!--            total_rate = #{reviewUpdateRequest.totalRate},-->
-<!--            trans_rate = #{reviewUpdateRequest.transRate},-->
-<!--            manage_rate = #{reviewUpdateRequest.manageRate},-->
-<!--            infra_rate = #{reviewUpdateRequest.infraRate},-->
-<!--            life_rate = #{reviewUpdateRequest.lifeRate},-->
-<!--            title = #{reviewUpdateRequest.title},-->
-<!--            description = #{reviewUpdateRequest.description},-->
-<!--            jibun = #{reviewUpdateRequest.jibun},-->
-<!--            pos = #{reviewUpdateRequest.pos},-->
-<!--            floors_count = #{reviewUpdateRequest.floorsCount},-->
-<!--            pyung_count = #{reviewUpdateRequest.pyungCount},-->
-<!--            room_info = #{reviewUpdateRequest.roomInfo},-->
-<!--            room_option = #{reviewUpdateRequest.roomOption},-->
-<!--            contract_type_id = #{reviewUpdateRequest.contractTypeId},-->
-<!--            start_date = #{reviewUpdateRequest.startDate},-->
-<!--            <choose>-->
-<!--                <when test="reviewUpdateRequest.endDate !=null and !reviewUpdateRequest.endDate.equals('')">-->
-<!--                    end_date = #{reviewUpdateRequest.endDate}-->
-<!--                </when>-->
-<!--                <otherwise>-->
-<!--                    end_date = ''-->
-<!--                </otherwise>-->
-<!--            </choose>-->
-<!--        WHERE 1=1-->
-<!--        AND review_id = #{reviewUpdateRequest.reviewId}-->
-<!--        AND user_id = #{reviewUpdateRequest.userId}-->
+        AND review_id = #{reviewUpdateRequest.reviewId}
+        AND user_id = #{reviewUpdateRequest.userId}
     </update>
 
     <update id="deleteReview" parameterType="map">
