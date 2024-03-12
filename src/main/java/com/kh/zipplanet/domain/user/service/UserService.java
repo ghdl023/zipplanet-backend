@@ -30,7 +30,7 @@ public class UserService {
         return mapper.findId(userFindIdRequest.getPhone());
     }
 
-    public User findPwd(UserFindPwdRequest userFindPwdRequest) throws Exception {
+    public String findPwd(UserFindPwdRequest userFindPwdRequest) throws Exception {
         return mapper.findPwd(userFindPwdRequest.getUsername(), userFindPwdRequest.getPhone());
     }
 

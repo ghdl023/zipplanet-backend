@@ -134,17 +134,17 @@ public class UserController {
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        User user = null;
+        String pwd = null;
         try {
-            user = userService.findPwd(userFindPwdRequest);
+            pwd = userService.findPwd(userFindPwdRequest);
         } catch (Exception e) {
             System.out.println(e);
         }
 
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
-        response.setData(user);
-        if(user == null) {
+        response.setData(pwd);
+        if(pwd == null) {
             response.setMessage("일치하는 유저가 없습니다. 아이디, 휴대폰번호를 다시 확인해주세요.");
         }
 

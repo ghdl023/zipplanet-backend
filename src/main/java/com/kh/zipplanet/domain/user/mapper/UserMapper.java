@@ -22,5 +22,5 @@ public interface UserMapper {
 
     User findId(@Param("phone") String phone);
 
-    User findPwd(@Param("username") String username, @Param("phone") String phone);
+    String findPwd(@Param("username") String username, @Param("phone") String phone);
 }

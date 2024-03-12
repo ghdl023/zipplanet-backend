@@ -57,8 +57,8 @@
         AND PHONE = #{phone}
     </select>
 
-    <select id="findPwd" resultType="com.kh.zipplanet.domain.user.model.User">
-        select * from users
+    <select id="findPwd" resultType="String">
+        select password from users
         where 1=1
         and username = #{username}
         and phone = #{phone}
