@@ -198,7 +198,7 @@
     </update>
 
     <select id="selectAllPos" resultType="com.kh.zipplanet.domain.review.model.PosVo">
-        SELECT SUBSTR(POS, 0, 17) as lat, SUBSTR(POS, 19) as lng
+        SELECT SUBSTR(POS, 0, INSTR(pos, ',', 1, 1)-1) as lat, SUBSTR(POS, INSTR(pos, ',', 1, 1)+1) as lng, pos
         FROM USER_REVIEW
         WHERE 1=1
         AND DELETE_YN = 'N'
