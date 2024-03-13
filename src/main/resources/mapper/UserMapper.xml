@@ -50,4 +50,17 @@
 <!--            and password = #{password}-->
 <!--        </selectKey>-->
     </insert>
+
+    <select id="findId" resultType="com.kh.zipplanet.domain.user.model.User">
+        SELECT * FROM USERS
+        WHERE 1=1
+        AND PHONE = #{phone}
+    </select>
+
+    <select id="findPwd" resultType="String">
+        select password from users
+        where 1=1
+        and username = #{username}
+        and phone = #{phone}
+    </select>
 </mapper>

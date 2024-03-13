@@ -1,8 +1,6 @@
 package com.kh.zipplanet.domain.user.controller;
 
-import com.kh.zipplanet.domain.user.model.User;
-import com.kh.zipplanet.domain.user.model.UserLoginRequest;
-import com.kh.zipplanet.domain.user.model.UserSignupRequest;
+import com.kh.zipplanet.domain.user.model.*;
 import com.kh.zipplanet.domain.user.service.UserService;
 import com.kh.zipplanet.global.common.CommonResponse;
 import com.kh.zipplanet.global.common.StatusEnum;
@@ -100,6 +98,54 @@ public class UserController {
         response.setData(user);
         if(user == null) {
             response.setMessage("회원가입을 실패했습니다.");
+        }
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/findId")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> findId(@RequestBody UserFindIdRequest userFindIdRequest){
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        User user = null;
+        try {
+            user = userService.findId(userFindIdRequest);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(user.getUsername());
+        if(user.getUsername() == null) {
+            response.setMessage("일치하는 유저가 없습니다. 휴대폰 번호를 다시 확인해주세요.");
+        }
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/findPwd")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> findPwd(@RequestBody UserFindPwdRequest userFindPwdRequest){
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        String pwd = null;
+        try {
+            pwd = userService.findPwd(userFindPwdRequest);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(pwd);
+        if(pwd == null) {
+            response.setMessage("일치하는 유저가 없습니다. 아이디, 휴대폰번호를 다시 확인해주세요.");
         }
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
