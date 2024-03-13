@@ -1,9 +1,6 @@
 package com.kh.zipplanet.domain.review.mapper;
 
-import com.kh.zipplanet.domain.review.model.ReviewCreateRequest;
-import com.kh.zipplanet.domain.review.model.ReviewDeleteRequest;
-import com.kh.zipplanet.domain.review.model.ReviewUpdateRequest;
-import com.kh.zipplanet.domain.review.model.ReviewVo;
+import com.kh.zipplanet.domain.review.model.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -26,4 +23,6 @@ public interface ReviewMapper {
     int updateReview(@Param("reviewUpdateRequest") ReviewUpdateRequest reviewUpdateRequest);
 
     int deleteReview(@Param("reviewDeleteRequest") ReviewDeleteRequest reviewDeleteRequest);
+
+    List<PosVo> selectAllPos();
 }

@@ -196,4 +196,11 @@
         AND review_id = #{reviewDeleteRequest.reviewId}
         AND user_id = #{reviewDeleteRequest.userId}
     </update>
+
+    <select id="selectAllPos" resultType="com.kh.zipplanet.domain.review.model.PosVo">
+        SELECT SUBSTR(POS, 0, 17) as lat, SUBSTR(POS, 19) as lng
+        FROM USER_REVIEW
+        WHERE 1=1
+        AND DELETE_YN = 'N'
+    </select>
 </mapper>

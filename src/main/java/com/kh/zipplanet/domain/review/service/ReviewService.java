@@ -1,10 +1,7 @@
 package com.kh.zipplanet.domain.review.service;
 
 import com.kh.zipplanet.domain.review.mapper.ReviewMapper;
-import com.kh.zipplanet.domain.review.model.ReviewCreateRequest;
-import com.kh.zipplanet.domain.review.model.ReviewDeleteRequest;
-import com.kh.zipplanet.domain.review.model.ReviewUpdateRequest;
-import com.kh.zipplanet.domain.review.model.ReviewVo;
+import com.kh.zipplanet.domain.review.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +43,9 @@ public class ReviewService {
 
     public int deleteReview(ReviewDeleteRequest reviewDeleteRequest) {
         return reviewMapper.deleteReview(reviewDeleteRequest);
+    }
+
+    public List<PosVo> selectAllPos() {
+        return reviewMapper.selectAllPos();
     }
 }

@@ -195,4 +195,28 @@ public class ReviewController {
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
+
+    @GetMapping("/selectAllPos")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> selectAllPos(){
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        List<PosVo> list = null;
+        try {
+            list = reviewService.selectAllPos();
+        } catch(Exception e){
+        }
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(list);
+
+        if(list == null) {
+            response.setMessage("조회된 결과가 없습니다.");
+        }
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
 }
