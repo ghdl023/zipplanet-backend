@@ -164,7 +164,7 @@ public class UserController {
         } catch (Exception e){
             System.out.println(e);
         }
-
+        System.out.println(result);
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
         response.setData(result);

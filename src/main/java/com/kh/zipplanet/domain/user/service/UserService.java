@@ -2,6 +2,7 @@ package com.kh.zipplanet.domain.user.service;
 
 import com.kh.zipplanet.domain.user.mapper.UserMapper;
 import com.kh.zipplanet.domain.user.model.*;
+import com.kh.zipplanet.domain.user.model.UserUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
