@@ -39,4 +39,7 @@ public class UserService {
         return mapper.updateUser(userUpdateRequest);
     }
 
+    public User findUnique(FindUniqueRequest findUniqueRequest) throws Exception {
+        return mapper.findUnique(findUniqueRequest.getUsername(), findUniqueRequest.getNickname(), findUniqueRequest.getPhone());
+    }
 }

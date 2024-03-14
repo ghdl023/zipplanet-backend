@@ -6,33 +6,33 @@
 <mapper namespace="com.kh.zipplanet.domain.user.mapper.UserMapper">
     <select id="getUser" resultType="com.kh.zipplanet.domain.user.model.User">
         select *
-        from users
+        from members
     </select>
 
     <select id="getUserByUserId" resultType="com.kh.zipplanet.domain.user.model.User">
         select user_id, username, nickname, phone, address, role_name, create_date, delete_date, delete_yn
-        from users join user_role on users.role_id = user_role.role_id
+        from members join user_role on members.role_id = user_role.role_id
         where 1=1
         and user_id = #{userId}
     </select>
 
     <select id="getUserByUsername" resultType="com.kh.zipplanet.domain.user.model.User">
         select user_id, username, nickname, phone, address, role_name, create_date, delete_date, delete_yn
-        from users join user_role on users.role_id = user_role.role_id
+        from members join user_role on members.role_id = user_role.role_id
         where 1=1
         and username = #{username}
     </select>
 
     <select id="login" resultType="com.kh.zipplanet.domain.user.model.User">
         select user_id, username, nickname, phone, address, role_name, create_date, delete_date, delete_yn
-        from users join user_role on users.role_id = user_role.role_id
+        from members join user_role on members.role_id = user_role.role_id
         where 1=1
         and username = #{username}
         and password = #{password}
     </select>
 
     <insert id="signUp" parameterType="com.kh.zipplanet.domain.user.model.UserSignupRequest">
-        insert into users(user_id, username, password, nickname, address, phone)
+        insert into members(user_id, username, password, nickname, address, phone)
         values (
             seq_userid.nextval,
             #{username},
@@ -52,20 +52,20 @@
     </insert>
 
     <select id="findId" resultType="com.kh.zipplanet.domain.user.model.User">
-        SELECT * FROM USERS
+        SELECT * FROM members
         WHERE 1=1
         AND PHONE = #{phone}
     </select>
 
     <select id="findPwd" resultType="String">
-        select password from users
+        select password from members
         where 1=1
         and username = #{username}
         and phone = #{phone}
     </select>
 
     <update id="updateUser">
-        update users
+        update members
         set password = #{password},
         nickname = #{nickname},
         address = #{address},
@@ -73,4 +73,9 @@
         where 1=1
         and username = #{username}
     </update>
+
+    <select id="findUnique" resultType="com.kh.zipplanet.domain.user.model.User">
+        select * from members
+        where username = #{username} or nickname = #{nickname} or phone = #{phone}
+    </select>
 </mapper>

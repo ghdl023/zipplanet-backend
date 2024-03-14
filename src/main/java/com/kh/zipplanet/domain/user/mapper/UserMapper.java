@@ -26,4 +26,6 @@ public interface UserMapper {
     String findPwd(@Param("username") String username, @Param("phone") String phone);
 
     int updateUser(UserUpdateRequest userUpdateRequest);
+
+    User findUnique(@Param("username") String username, @Param("nickname") String nickname, @Param("phone") String phone);
 }
