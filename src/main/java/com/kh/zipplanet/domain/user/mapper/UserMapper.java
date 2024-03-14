@@ -2,6 +2,7 @@ package com.kh.zipplanet.domain.user.mapper;
 
 import com.kh.zipplanet.domain.user.model.User;
 import com.kh.zipplanet.domain.user.model.UserSignupRequest;
+import com.kh.zipplanet.domain.user.model.UserUpdateRequest;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,6 @@ public interface UserMapper {
     User findId(@Param("phone") String phone);
 
     String findPwd(@Param("username") String username, @Param("phone") String phone);
+
+    int updateUser(UserUpdateRequest userUpdateRequest);
 }

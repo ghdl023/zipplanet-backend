@@ -150,4 +150,25 @@ public class UserController {
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
+
+    @PostMapping("/updateUser")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        int result = 0;
+        try {
+            result = userService.updateUser(userUpdateRequest);
+        } catch (Exception e){
+            System.out.println(e);
+        }
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(result);
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
 }

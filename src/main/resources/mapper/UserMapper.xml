@@ -63,4 +63,13 @@
         and username = #{username}
         and phone = #{phone}
     </select>
+
+    <update id="updateUser">
+        update users
+        set password = #{password},
+        nickname = #{nickname},
+        phone = #{phone},
+        address = #{address}
+        where username = #{username}
+    </update>
 </mapper>

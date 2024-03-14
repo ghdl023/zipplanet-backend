@@ -34,4 +34,8 @@ public class UserService {
         return mapper.findPwd(userFindPwdRequest.getUsername(), userFindPwdRequest.getPhone());
     }
 
+    public int updateUser(UserUpdateRequest userUpdateRequest) throws Exception {
+        return mapper.updateUser(userUpdateRequest);
+    }
+
 }
