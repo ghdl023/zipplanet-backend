@@ -40,7 +40,7 @@
     <select id="searchByPos" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
         SELECT a.*
         FROM (
-            SELECT a.*, u.nickname as creator, ROWNUM as rnum
+            SELECT a.*, m.nickname as creator, ROWNUM as rnum
             FROM (
                 SELECT *
                 FROM user_review
@@ -48,8 +48,8 @@
                 AND pos = #{pos}
                 AND delete_yn = 'N'
                 ORDER BY #{sort} DESC
-            ) a, users u
-            WHERE a.user_id = u.user_id
+            ) a, members m
+            WHERE a.user_id = m.user_id
         ) a
         WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
     </select>
@@ -72,7 +72,7 @@
     <select id="searchByKeyword" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
         SELECT *
         FROM (
-            SELECT a.*, u.nickname as creator, ROWNUM as rnum
+            SELECT a.*, m.nickname as creator, ROWNUM as rnum
             FROM (
                 SELECT *
                 FROM user_review
@@ -80,8 +80,8 @@
                 AND jibun like '%' || #{keyword} || '%'
                 AND delete_yn = 'N'
                 ORDER BY #{sort} DESC
-            ) a, users u
-            WHERE a.user_id = u.user_id
+            ) a, members m
+            WHERE a.user_id = m.user_id
         )
         WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
     </select>
@@ -104,7 +104,7 @@
     <select id="searchByFilter" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
         SELECT *
         FROM (
-            SELECT a.*, u.nickname as creator, ROWNUM as rnum
+            SELECT a.*, m.nickname as creator, ROWNUM as rnum
             FROM (
                 SELECT *
                 FROM user_review
@@ -127,8 +127,8 @@
                 AND total_rate between 0 and #{rate}
                 AND delete_yn = 'N'
                 ORDER BY #{sort} DESC
-            ) a, users u
-            WHERE a.user_id = u.user_id
+            ) a, members m
+            WHERE a.user_id = m.user_id
         )
         WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
     </select>
