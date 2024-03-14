@@ -9,6 +9,7 @@ public class ReviewVo {
     private int reviewId;
     private int contractTypeId;
     private int userId;
+    private String creator;
     private String jibun;
     private String pos;
     private String title;

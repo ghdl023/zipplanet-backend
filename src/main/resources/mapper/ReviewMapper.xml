@@ -38,122 +38,129 @@
     </insert>
 
     <select id="searchByPos" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        SELECT *
+        SELECT a.*
         FROM (
-        SELECT a.*, ROWNUM as rnum
-        FROM (
-        SELECT *
-        FROM user_review
-        WHERE 1=1
-        AND pos = #{pos}
-        AND delete_yn = 'N'
-        ORDER BY #{sort} DESC
-        )
-        a)
+            SELECT a.*, u.nickname as creator, ROWNUM as rnum
+            FROM (
+                SELECT *
+                FROM user_review
+                WHERE 1=1
+                AND pos = #{pos}
+                AND delete_yn = 'N'
+                ORDER BY #{sort} DESC
+            ) a, users u
+            WHERE a.user_id = u.user_id
+        ) a
         WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
     </select>
 
     <select id="searchByPosTotalCount">
         SELECT COUNT(*)
         FROM (
-        SELECT a.*, ROWNUM as rnum
-        FROM (
-        SELECT *
-        FROM user_review
-        WHERE 1=1
-        AND pos = #{pos}
-        AND delete_yn = 'N'
-        ORDER BY #{sort} DESC
+            SELECT a.*, ROWNUM as rnum
+            FROM (
+                SELECT *
+                FROM user_review
+                WHERE 1=1
+                AND pos = #{pos}
+                AND delete_yn = 'N'
+                ORDER BY #{sort} DESC
+            ) a
         )
-        a)
     </select>
 
     <select id="searchByKeyword" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
         SELECT *
         FROM (
-        SELECT a.*, ROWNUM as rnum FROM (
-        SELECT *
-        FROM user_review
-        WHERE 1=1
-        AND jibun like '%' || #{keyword} || '%'
-        AND delete_yn = 'N'
-        ORDER BY #{sort} DESC
+            SELECT a.*, u.nickname as creator, ROWNUM as rnum
+            FROM (
+                SELECT *
+                FROM user_review
+                WHERE 1=1
+                AND jibun like '%' || #{keyword} || '%'
+                AND delete_yn = 'N'
+                ORDER BY #{sort} DESC
+            ) a, users u
+            WHERE a.user_id = u.user_id
         )
-        a)
         WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
     </select>
 
     <select id="searchByKeywordTotalCount">
         SELECT COUNT(*)
         FROM (
-        SELECT a.*, ROWNUM as rnum FROM (
-        SELECT *
-        FROM user_review
-        WHERE 1=1
-        AND jibun like '%' || #{keyword} || '%'
-        AND delete_yn = 'N'
-        ORDER BY #{sort} DESC
+            SELECT a.*, ROWNUM as rnum
+            FROM (
+                SELECT *
+                FROM user_review
+                WHERE 1=1
+                AND jibun like '%' || #{keyword} || '%'
+                AND delete_yn = 'N'
+                ORDER BY #{sort} DESC
+            ) a
         )
-        a)
     </select>
 
     <select id="searchByFilter" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
         SELECT *
         FROM (
-        SELECT a.*, ROWNUM as rnum FROM (
-        SELECT *
-        FROM user_review
-        WHERE 1=1
-        <choose>
-            <when test="gu != null and gu != ''">
-                AND jibun like '%' || #{gu} || '%'
-            </when>
-        </choose>
-        <choose>
-            <when test="dong != null and dong != ''">
-                AND jibun like '%' || #{dong} || '%'
-            </when>
-        </choose>
-        <choose>
-            <when test="contractTypeId != null and contractTypeId != ''">
-                AND contract_type_id = #{contractTypeId}
-            </when>
-        </choose>
-        AND total_rate between 0 and #{rate}
-        AND delete_yn = 'N'
-        ORDER BY #{sort} DESC
+            SELECT a.*, u.nickname as creator, ROWNUM as rnum
+            FROM (
+                SELECT *
+                FROM user_review
+                WHERE 1=1
+                <choose>
+                    <when test="gu != null and gu != ''">
+                        AND jibun like '%' || #{gu} || '%'
+                    </when>
+                </choose>
+                <choose>
+                    <when test="dong != null and dong != ''">
+                        AND jibun like '%' || #{dong} || '%'
+                    </when>
+                </choose>
+                <choose>
+                    <when test="contractTypeId != null and contractTypeId != ''">
+                        AND contract_type_id = #{contractTypeId}
+                    </when>
+                </choose>
+                AND total_rate between 0 and #{rate}
+                AND delete_yn = 'N'
+                ORDER BY #{sort} DESC
+            ) a, users u
+            WHERE a.user_id = u.user_id
         )
-        a)
         WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
     </select>
 
     <select id="searchByFilterTotalCount" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
         SELECT COUNT(*)
         FROM (
-        SELECT a.*, ROWNUM as rnum FROM (
-        SELECT *
-        FROM user_review
-        WHERE 1=1
-        <choose>
-            <when test="gu != null and gu != ''">
-                AND jibun like '%' || #{gu} || '%'
-            </when>
-        </choose>
-        <choose>
-            <when test="dong != null and dong != ''">
-                AND jibun like '%' || #{dong} || '%'
-            </when>
-        </choose>
-        <choose>
-            <when test="contractTypeId != null and contractTypeId != ''">
-                AND contract_type_id = #{contractTypeId}
-            </when>
-        </choose>
-        AND total_rate between 0 and #{rate}
-        AND delete_yn = 'N'
-        ORDER BY #{sort} DESC
+            SELECT a.*, ROWNUM as rnum
+            FROM (
+                SELECT *
+                FROM user_review
+                WHERE 1=1
+                <choose>
+                    <when test="gu != null and gu != ''">
+                        AND jibun like '%' || #{gu} || '%'
+                    </when>
+                </choose>
+                <choose>
+                    <when test="dong != null and dong != ''">
+                        AND jibun like '%' || #{dong} || '%'
+                    </when>
+                </choose>
+                <choose>
+                    <when test="contractTypeId != null and contractTypeId != ''">
+                        AND contract_type_id = #{contractTypeId}
+                    </when>
+                </choose>
+                AND total_rate between 0 and #{rate}
+                AND delete_yn = 'N'
+                ORDER BY #{sort} DESC,
+            ) a
         )
-        a)
         WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
     </select>
 
