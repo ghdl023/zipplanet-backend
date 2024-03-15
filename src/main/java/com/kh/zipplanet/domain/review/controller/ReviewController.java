@@ -3,6 +3,7 @@ package com.kh.zipplanet.domain.review.controller;
 import com.kh.zipplanet.domain.review.model.*;
 import com.kh.zipplanet.domain.review.service.ReviewReportService;
 import com.kh.zipplanet.domain.review.service.ReviewService;
+import com.kh.zipplanet.domain.review.service.ReviewZzimService;
 import com.kh.zipplanet.global.common.CommonResponse;
 import com.kh.zipplanet.global.common.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class ReviewController {
 
     @Autowired
     ReviewReportService reviewReportService;
+
+    @Autowired
+    ReviewZzimService reviewZzimService;
 
     @PostMapping("/create")
     @ResponseBody
@@ -215,6 +219,26 @@ public class ReviewController {
 
         if(list == null) {
             response.setMessage("조회된 결과가 없습니다.");
+        }
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/favorite")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> updateReviewZzim(@RequestBody ReviewZzimRequest reviewZzimRequest){
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        int result = reviewZzimService.updateReviewZzim(reviewZzimRequest);
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(result);
+
+        if(result == 0) {
+            response.setMessage("오류가 발생했습니다.");
         }
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);

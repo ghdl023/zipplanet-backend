@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.zipplanet.domain.review.mapper.ReviewZzimMapper">
+    <select id="findReviewZzim" resultType="int">
+        SELECT review_id
+        FROM user_review_zzim_log
+        WHERE 1=1
+        AND user_id = #{userId}
+        AND review_id = #{reviewId}
+    </select>
+
+    <insert id="insertReviewZzim">
+        INSERT INTO user_review_zzim_log
+        VALUES (
+            #{userId},
+            #{reviewId},
+            SYSDATE,
+            SYSDATE,
+            'Y'
+        )
+    </insert>
+
+    <update id="updateReviewZzim">
+        UPDATE user_review_zzim_log
+        SET zzim_yn = #{zzimYn}
+        WHERE 1=1
+        AND user_id = #{userId}
+        AND review_id = #{reviewId}
+    </update>
+</mapper>
