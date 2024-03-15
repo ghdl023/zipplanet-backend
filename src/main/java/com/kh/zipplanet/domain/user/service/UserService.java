@@ -39,7 +39,13 @@ public class UserService {
         return mapper.updateUser(userUpdateRequest);
     }
 
-    public User findUnique(FindUniqueRequest findUniqueRequest) throws Exception {
-        return mapper.findUnique(findUniqueRequest.getUsername(), findUniqueRequest.getNickname(), findUniqueRequest.getPhone());
+    public User findUniqueUsername(String username) throws Exception {
+        return mapper.findUnique(username, "", "");
+    }
+    public User findUniqueNickname(String nickname) throws Exception {
+        return mapper.findUnique("" , nickname, "");
+    }
+    public User findUniquePhone(String phone) throws Exception {
+        return mapper.findUnique("", "", phone);
     }
 }

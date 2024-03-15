@@ -4,8 +4,9 @@ import lombok.Data;
 @Data
 public class UserUpdateRequest {
     private String password;
+    private String passwordConfirm;
     private String nickname;
     private String phone;
-    private String address;
+    private String address = "";
     private String username;
 }
