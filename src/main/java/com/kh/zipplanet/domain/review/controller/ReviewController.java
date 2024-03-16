@@ -83,7 +83,7 @@ public class ReviewController {
             @RequestParam(value="contractTypeId", defaultValue = "") String contractTypeId,
             @RequestParam(value="rate", defaultValue = "5") int rate,
             @RequestParam(value="pos") String pos,
-            @RequestParam(value="sort", defaultValue = "LIKE_COUNT") String sort,
+            @RequestParam(value="sort", defaultValue = "CREATE_DATE") String sort,
             @RequestParam(value="offset") int offset,
             @RequestParam(value="limit", defaultValue="2") int limit
     ) {

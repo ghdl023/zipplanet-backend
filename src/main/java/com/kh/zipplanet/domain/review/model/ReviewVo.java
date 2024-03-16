@@ -29,4 +29,5 @@ public class ReviewVo {
     private LocalDateTime updateDate;
     private int likeCount;
     private int viewCount;
+    private String zzimYn;
 }

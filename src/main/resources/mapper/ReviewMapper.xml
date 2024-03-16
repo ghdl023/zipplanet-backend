@@ -38,7 +38,7 @@
     </insert>
 
     <select id="searchByPos" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        SELECT a.*
+        SELECT a.*, NVL(z.zzim_yn, 'N') as zzim_yn
         FROM (
             SELECT a.*, m.nickname as creator, ROWNUM as rnum
             FROM (
@@ -47,11 +47,12 @@
                 WHERE 1=1
                 AND pos = #{pos}
                 AND delete_yn = 'N'
-                ORDER BY #{sort} DESC
+                ORDER BY ${sort} DESC
             ) a, members m
             WHERE a.user_id = m.user_id
-        ) a
-        WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
+        ) a LEFT OUTER JOIN user_review_zzim_log z
+        ON a.review_id = z.review_id
+        WHERE rnum between ${offset} and  ( ${offset} + ${limit} - 1 )
     </select>
 
     <select id="searchByPosTotalCount">
@@ -64,13 +65,12 @@
                 WHERE 1=1
                 AND pos = #{pos}
                 AND delete_yn = 'N'
-                ORDER BY #{sort} DESC
             ) a
         )
     </select>
 
     <select id="searchByKeyword" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        SELECT *
+        SELECT a.*, NVL(z.zzim_yn, 'N') as zzim_yn
         FROM (
             SELECT a.*, m.nickname as creator, ROWNUM as rnum
             FROM (
@@ -79,11 +79,12 @@
                 WHERE 1=1
                 AND jibun like '%' || #{keyword} || '%'
                 AND delete_yn = 'N'
-                ORDER BY #{sort} DESC
+                ORDER BY ${sort} DESC
             ) a, members m
             WHERE a.user_id = m.user_id
-        )
-        WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
+        ) a LEFT OUTER JOIN user_review_zzim_log z
+        ON a.review_id = z.review_id
+        WHERE rnum between ${offset} and ( ${offset} + ${limit} - 1 )
     </select>
 
     <select id="searchByKeywordTotalCount">
@@ -96,44 +97,38 @@
                 WHERE 1=1
                 AND jibun like '%' || #{keyword} || '%'
                 AND delete_yn = 'N'
-                ORDER BY #{sort} DESC
             ) a
         )
     </select>
 
     <select id="searchByFilter" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        SELECT *
+        SELECT a.*, NVL(z.zzim_yn, 'N') as zzim_yn
         FROM (
             SELECT a.*, m.nickname as creator, ROWNUM as rnum
             FROM (
                 SELECT *
                 FROM user_review
                 WHERE 1=1
-                <choose>
-                    <when test="gu != null and gu != ''">
-                        AND jibun like '%' || #{gu} || '%'
-                    </when>
-                </choose>
-                <choose>
-                    <when test="dong != null and dong != ''">
-                        AND jibun like '%' || #{dong} || '%'
-                    </when>
-                </choose>
-                <choose>
-                    <when test="contractTypeId != null and contractTypeId != ''">
-                        AND contract_type_id = #{contractTypeId}
-                    </when>
-                </choose>
-                AND total_rate between 0 and #{rate}
+                <if test="gu != null and gu != ''">
+                    AND jibun like '%' || #{gu} || '%'
+                </if>
+                <if test="dong != null and dong != ''">
+                    AND jibun like '%' || #{dong} || '%'
+                </if>
+                <if test="contractTypeId != null and contractTypeId != ''">
+                    AND contract_type_id = #{contractTypeId}
+                </if>
+                AND total_rate between 0 and ${rate}
                 AND delete_yn = 'N'
-                ORDER BY #{sort} DESC
+                ORDER BY ${sort} DESC
             ) a, members m
             WHERE a.user_id = m.user_id
-        )
-        WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
+        ) a LEFT OUTER JOIN user_review_zzim_log z
+        ON a.review_id = z.review_id
+        WHERE rnum between ${offset} and  ( ${offset} + ${limit} - 1 )
     </select>
 
-    <select id="searchByFilterTotalCount" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+    <select id="searchByFilterTotalCount">
         SELECT COUNT(*)
         FROM (
             SELECT a.*, ROWNUM as rnum
@@ -141,27 +136,20 @@
                 SELECT *
                 FROM user_review
                 WHERE 1=1
-                <choose>
-                    <when test="gu != null and gu != ''">
-                        AND jibun like '%' || #{gu} || '%'
-                    </when>
-                </choose>
-                <choose>
-                    <when test="dong != null and dong != ''">
-                        AND jibun like '%' || #{dong} || '%'
-                    </when>
-                </choose>
-                <choose>
-                    <when test="contractTypeId != null and contractTypeId != ''">
-                        AND contract_type_id = #{contractTypeId}
-                    </when>
-                </choose>
-                AND total_rate between 0 and #{rate}
+                <if test="gu != null and gu != ''">
+                    AND jibun like '%' || #{gu} || '%'
+                </if>
+                <if test="dong != null and dong != ''">
+                    AND jibun like '%' || #{dong} || '%'
+                </if>
+                <if test="contractTypeId != null and contractTypeId != ''">
+                    AND contract_type_id = #{contractTypeId}
+                </if>
+                AND total_rate between 0 and ${rate}
                 AND delete_yn = 'N'
-                ORDER BY #{sort} DESC,
+                ORDER BY ${sort} DESC
             ) a
         )
-        WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
     </select>
 
     <update id="updateReview" parameterType="map">
