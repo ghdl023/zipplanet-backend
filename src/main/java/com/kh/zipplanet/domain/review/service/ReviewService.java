@@ -1,10 +1,7 @@
 package com.kh.zipplanet.domain.review.service;
 
 import com.kh.zipplanet.domain.review.mapper.ReviewMapper;
-import com.kh.zipplanet.domain.review.model.ReviewCreateRequest;
-import com.kh.zipplanet.domain.review.model.ReviewDeleteRequest;
-import com.kh.zipplanet.domain.review.model.ReviewUpdateRequest;
-import com.kh.zipplanet.domain.review.model.ReviewVo;
+import com.kh.zipplanet.domain.review.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +13,8 @@ public class ReviewService {
     @Autowired
     ReviewMapper reviewMapper;
 
-    public int create(ReviewCreateRequest reviewCreateRequest) {
-        return reviewMapper.create(reviewCreateRequest);
+    public int createReview(ReviewCreateRequest reviewCreateRequest) {
+        return reviewMapper.createReview(reviewCreateRequest);
     }
 
     public List<ReviewVo> search(String searchType, String keyword, String gu, String dong, String contractTypeId, int rate, String pos, String sort, int offset, int limit) {
@@ -40,12 +37,16 @@ public class ReviewService {
         }
     }
 
-    public int update(ReviewUpdateRequest reviewUpdateRequest) {
-        return reviewMapper.update(reviewUpdateRequest);
+    public int updateReview(ReviewUpdateRequest reviewUpdateRequest) {
+        return reviewMapper.updateReview(reviewUpdateRequest);
     }
 
-    public int delete(ReviewDeleteRequest reviewDeleteRequest) {
-        return reviewMapper.delete(reviewDeleteRequest);
+    public int deleteReview(ReviewDeleteRequest reviewDeleteRequest) {
+        return reviewMapper.deleteReview(reviewDeleteRequest);
+    }
+
+    public List<PosVo> selectAllPos() {
+        return reviewMapper.selectAllPos();
     }
 
     public List<ReviewVo> searchMyReview(int userId){

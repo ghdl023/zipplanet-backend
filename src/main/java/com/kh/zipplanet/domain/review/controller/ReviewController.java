@@ -1,7 +1,9 @@
 package com.kh.zipplanet.domain.review.controller;
 
 import com.kh.zipplanet.domain.review.model.*;
+import com.kh.zipplanet.domain.review.service.ReviewReportService;
 import com.kh.zipplanet.domain.review.service.ReviewService;
+import com.kh.zipplanet.domain.review.service.ReviewZzimService;
 import com.kh.zipplanet.global.common.CommonResponse;
 import com.kh.zipplanet.global.common.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,12 @@ public class ReviewController {
     @Autowired
     ReviewService reviewService;
 
+    @Autowired
+    ReviewReportService reviewReportService;
+
+    @Autowired
+    ReviewZzimService reviewZzimService;
+
     @PostMapping("/create")
     @ResponseBody
     public ResponseEntity<CommonResponse> create(@RequestBody ReviewCreateRequest reviewCreateRequest) {
@@ -29,18 +37,37 @@ public class ReviewController {
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
+//        System.out.println("create review !");
 //        System.out.println(reviewCreateRequest);
+
+//        System.out.println("userId : " + reviewCreateRequest.getUserId());
+//        System.out.println("totalRate : " + reviewCreateRequest.getTotalRate());
+//        System.out.println("transRate : " + reviewCreateRequest.getTransRate());
+//        System.out.println("infraRate : " + reviewCreateRequest.getInfraRate());
+//        System.out.println("manageRate : " + reviewCreateRequest.getManageRate());
+//        System.out.println("lifeRate : " + reviewCreateRequest.getLifeRate());
+//        System.out.println("title : " + reviewCreateRequest.getTitle());
+//        System.out.println("description : " + reviewCreateRequest.getDescription());
+//        System.out.println("jibun : " + reviewCreateRequest.getJibun());
+//        System.out.println("pos : " + reviewCreateRequest.getPos());
+//        System.out.println("floorsCount : " + reviewCreateRequest.getFloorsCount());
+//        System.out.println("pyungCount : " + reviewCreateRequest.getPyungCount());
+//        System.out.println("roomInfo : " + reviewCreateRequest.getRoomInfo());
+//        System.out.println("roomOption : " + reviewCreateRequest.getRoomOption());
+//        System.out.println("contractTypeId : " + reviewCreateRequest.getContractTypeId());
+//        System.out.println("startDate : " + reviewCreateRequest.getStartDate());
+//        System.out.println("endDate : " + reviewCreateRequest.getEndDate());
 
         int result = 0;
         try {
-            result = reviewService.create(reviewCreateRequest);
+            result = reviewService.createReview(reviewCreateRequest);
         } catch(Exception e) {
         }
         System.out.println(result);
 
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
-        response.setData(null);
+        response.setData(result);
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
 
@@ -56,7 +83,7 @@ public class ReviewController {
             @RequestParam(value="contractTypeId", defaultValue = "") String contractTypeId,
             @RequestParam(value="rate", defaultValue = "5") int rate,
             @RequestParam(value="pos") String pos,
-            @RequestParam(value="sort", defaultValue = "LIKE_COUNT") String sort,
+            @RequestParam(value="sort", defaultValue = "CREATE_DATE") String sort,
             @RequestParam(value="offset") int offset,
             @RequestParam(value="limit", defaultValue="2") int limit
     ) {
@@ -103,18 +130,18 @@ public class ReviewController {
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-//        System.out.println(reviewUpdateRequest);
+        System.out.println(reviewUpdateRequest);
 
         int result = 0;
         try {
-            result = reviewService.update(reviewUpdateRequest);
+            result = reviewService.updateReview(reviewUpdateRequest);
         } catch(Exception e) {
         }
         System.out.println(result);
 
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
-        response.setData(null);
+        response.setData(result);
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
@@ -130,14 +157,89 @@ public class ReviewController {
 
         int result = 0;
         try {
-            result = reviewService.delete(reviewDeleteRequest);
+            result = reviewService.deleteReview(reviewDeleteRequest);
         } catch(Exception e) {
         }
         System.out.println(result);
 
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
-        response.setData(null);
+        response.setData(result);
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/report")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> report(@RequestBody ReviewReportRequest reviewReportRequest) {
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+//        System.out.println(reviewUpdateRequest);
+
+        int result = 0;
+        try {
+            if(reviewReportService.findByReviewIdAndUserId(reviewReportRequest) > 0) { // 이미 신고내역 있는 경우
+                response.setStatus(StatusEnum.OK);
+                response.setMessage("이미 신고한 리뷰입니다.");
+                response.setData(null);
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+
+            } else { // 신고내역 없는 경우
+                result = reviewReportService.reportReview(reviewReportRequest);
+            }
+        } catch(Exception e) {
+        }
+        System.out.println(result);
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(result);
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/selectAllPos")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> selectAllPos(){
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        List<PosVo> list = null;
+        try {
+            list = reviewService.selectAllPos();
+        } catch(Exception e){
+        }
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(list);
+
+        if(list == null) {
+            response.setMessage("조회된 결과가 없습니다.");
+        }
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/favorite")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> updateReviewZzim(@RequestBody ReviewZzimRequest reviewZzimRequest){
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        int result = reviewZzimService.updateReviewZzim(reviewZzimRequest);
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(result);
+
+        if(result == 0) {
+            response.setMessage("오류가 발생했습니다.");
+        }
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }

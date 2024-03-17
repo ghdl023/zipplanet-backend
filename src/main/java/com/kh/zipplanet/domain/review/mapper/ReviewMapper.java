@@ -1,9 +1,6 @@
 package com.kh.zipplanet.domain.review.mapper;
 
-import com.kh.zipplanet.domain.review.model.ReviewCreateRequest;
-import com.kh.zipplanet.domain.review.model.ReviewDeleteRequest;
-import com.kh.zipplanet.domain.review.model.ReviewUpdateRequest;
-import com.kh.zipplanet.domain.review.model.ReviewVo;
+import com.kh.zipplanet.domain.review.model.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -14,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface ReviewMapper {
 
-    int create(ReviewCreateRequest reviewCreateRequest);
+    int createReview(@Param("reviewCreateRequest") ReviewCreateRequest reviewCreateRequest);
 
     List<ReviewVo> searchByPos(@Param("pos") String pos, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit);
     int searchByPosTotalCount(@Param("pos") String pos, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit);
@@ -23,9 +20,11 @@ public interface ReviewMapper {
     List<ReviewVo> searchByFilter(@Param("gu") String gu, @Param("dong") String dong, @Param("contractTypeId") String contractTypeId, @Param("rate") int rate, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit);
     int searchByFilterTotalCount(@Param("gu") String gu, @Param("dong") String dong, @Param("contractTypeId") String contractTypeId, @Param("rate") int rate, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit);
 
-    int update(ReviewUpdateRequest reviewUpdateRequest);
+    int updateReview(@Param("reviewUpdateRequest") ReviewUpdateRequest reviewUpdateRequest);
 
-    int delete(ReviewDeleteRequest reviewDeleteRequest);
+    int deleteReview(@Param("reviewDeleteRequest") ReviewDeleteRequest reviewDeleteRequest);
+
+    List<PosVo> selectAllPos();
 
     List<ReviewVo> searchMyReview(@Param("userId") int userId);
 }

@@ -41,14 +41,6 @@
             #{address},
             #{phone}
         )
-        <!-- not working... -->
-<!--        <selectKey keyProperty="user_id,username,nickname,phone,address,role_name,create_date,delete_date,delete_yn" keyColumn="user_id,username,nickname,phone,address,role_name,create_date,delete_date,delete_yn" resultType="com.kh.zipplanet.domain.user.model.UserSignupRequest"  order="AFTER">-->
-<!--            select user_id, username, nickname, phone, address, role_name, create_date, delete_date, delete_yn-->
-<!--            from users join user_role on users.role_id = user_role.role_id-->
-<!--            where 1=1-->
-<!--            and username = #{username}-->
-<!--            and password = #{password}-->
-<!--        </selectKey>-->
     </insert>
 
     <select id="findId" resultType="com.kh.zipplanet.domain.user.model.User">

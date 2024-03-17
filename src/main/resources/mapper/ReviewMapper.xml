@@ -4,194 +4,192 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kh.zipplanet.domain.review.mapper.ReviewMapper">
-    <insert id="create" parameterType="com.kh.zipplanet.domain.review.model.ReviewCreateRequest">
-        insert into user_review(
-        review_id,
-        user_id,
-        total_rate,
-        trans_rate,
-        manage_rate,
-        infra_rate,
-        life_rate,
-        title,
-        description,
-        jibun,
-        pos,
-        floors_count,
-        pyung_count,
-        room_info,
-        room_option,
-        contract_type_id,
-        start_date,
-        end_date
-        )
-        values (
-        seq_reviewid.nextval,
-        #{userId},
-        #{totalRate},
-        #{transRate},
-        #{manageRate},
-        #{infraRate},
-        #{lifeRate},
-        #{title},
-        #{description},
-        #{jibun},
-        #{pos},
-        #{floorsCount},
-        #{pyungCount},
-        #{roomInfo},
-        #{roomOption},
-        #{contractTypeId},
-        #{startDate},
-        #{endDate}
+    <insert id="createReview" parameterType="map">
+        INSERT INTO user_review(
+            review_id, user_id, total_rate, trans_rate, manage_rate, infra_rate, life_rate, title, description, jibun,
+            pos, floors_count, pyung_count, room_info, room_option, contract_type_id, start_date, end_date
+        ) VALUES (
+            SEQ_REVIEWID.NEXTVAL,
+            #{reviewCreateRequest.userId},
+            #{reviewCreateRequest.totalRate},
+            #{reviewCreateRequest.transRate},
+            #{reviewCreateRequest.manageRate},
+            #{reviewCreateRequest.infraRate},
+            #{reviewCreateRequest.lifeRate},
+            #{reviewCreateRequest.title},
+            #{reviewCreateRequest.description},
+            #{reviewCreateRequest.jibun},
+            #{reviewCreateRequest.pos},
+            #{reviewCreateRequest.floorsCount},
+            #{reviewCreateRequest.pyungCount},
+            #{reviewCreateRequest.roomInfo},
+            #{reviewCreateRequest.roomOption},
+            #{reviewCreateRequest.contractTypeId},
+            #{reviewCreateRequest.startDate},
+            <choose>
+                <when test="reviewCreateRequest.endDate !=null and !reviewCreateRequest.endDate.equals('')">
+                    #{reviewCreateRequest.endDate}
+                </when>
+                <otherwise>
+                    null
+                </otherwise>
+            </choose>
         )
     </insert>
 
     <select id="searchByPos" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        SELECT *
+        SELECT a.*, NVL(z.zzim_yn, 'N') as zzim_yn
         FROM (
-        SELECT a.*, ROWNUM as rnum
-        FROM (
-        SELECT *
-        FROM user_review
-        WHERE 1=1
-        AND pos = #{pos}
-        ORDER BY #{sort} DESC
-        )
-        a)
-        WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
+            SELECT a.*, m.nickname as creator, ROWNUM as rnum
+            FROM (
+                SELECT *
+                FROM user_review
+                WHERE 1=1
+                AND pos = #{pos}
+                AND delete_yn = 'N'
+                ORDER BY ${sort} DESC
+            ) a, members m
+            WHERE a.user_id = m.user_id
+        ) a LEFT OUTER JOIN user_review_zzim_log z
+        ON a.review_id = z.review_id
+        WHERE rnum between ${offset} and  ( ${offset} + ${limit} - 1 )
     </select>
 
     <select id="searchByPosTotalCount">
         SELECT COUNT(*)
         FROM (
-        SELECT a.*, ROWNUM as rnum
-        FROM (
-        SELECT *
-        FROM user_review
-        WHERE 1=1
-        AND pos = #{pos}
-        ORDER BY #{sort} DESC
+            SELECT a.*, ROWNUM as rnum
+            FROM (
+                SELECT *
+                FROM user_review
+                WHERE 1=1
+                AND pos = #{pos}
+                AND delete_yn = 'N'
+            ) a
         )
-        a)
     </select>
 
     <select id="searchByKeyword" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        SELECT *
+        SELECT a.*, NVL(z.zzim_yn, 'N') as zzim_yn
         FROM (
-        SELECT a.*, ROWNUM as rnum FROM (
-        SELECT *
-        FROM user_review
-        WHERE 1=1
-        AND jibun like '%' || #{keyword} || '%'
-        ORDER BY #{sort} DESC
-        )
-        a)
-        WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
+            SELECT a.*, m.nickname as creator, ROWNUM as rnum
+            FROM (
+                SELECT *
+                FROM user_review
+                WHERE 1=1
+                AND jibun like '%' || #{keyword} || '%'
+                AND delete_yn = 'N'
+                ORDER BY ${sort} DESC
+            ) a, members m
+            WHERE a.user_id = m.user_id
+        ) a LEFT OUTER JOIN user_review_zzim_log z
+        ON a.review_id = z.review_id
+        WHERE rnum between ${offset} and ( ${offset} + ${limit} - 1 )
     </select>
 
     <select id="searchByKeywordTotalCount">
         SELECT COUNT(*)
         FROM (
-        SELECT a.*, ROWNUM as rnum FROM (
-        SELECT *
-        FROM user_review
-        WHERE 1=1
-        AND jibun like '%' || #{keyword} || '%'
-        ORDER BY #{sort} DESC
+            SELECT a.*, ROWNUM as rnum
+            FROM (
+                SELECT *
+                FROM user_review
+                WHERE 1=1
+                AND jibun like '%' || #{keyword} || '%'
+                AND delete_yn = 'N'
+            ) a
         )
-        a)
     </select>
 
     <select id="searchByFilter" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        SELECT *
+        SELECT a.*, NVL(z.zzim_yn, 'N') as zzim_yn
         FROM (
-        SELECT a.*, ROWNUM as rnum FROM (
-        SELECT *
-        FROM user_review
-        WHERE 1=1
-        <choose>
-            <when test="gu != null and gu != ''">
-                AND jibun like '%' || #{gu} || '%'
-            </when>
-        </choose>
-        <choose>
-            <when test="dong != null and dong != ''">
-                AND jibun like '%' || #{dong} || '%'
-            </when>
-        </choose>
-        <choose>
-            <when test="contractTypeId != null and contractTypeId != ''">
-                AND contract_type_id = #{contractTypeId}
-            </when>
-        </choose>
-        AND total_rate between 0 and #{rate}
-        ORDER BY #{sort} DESC
-        )
-        a)
-        WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
+            SELECT a.*, m.nickname as creator, ROWNUM as rnum
+            FROM (
+                SELECT *
+                FROM user_review
+                WHERE 1=1
+                <if test="gu != null and gu != ''">
+                    AND jibun like '%' || #{gu} || '%'
+                </if>
+                <if test="dong != null and dong != ''">
+                    AND jibun like '%' || #{dong} || '%'
+                </if>
+                <if test="contractTypeId != null and contractTypeId != ''">
+                    AND contract_type_id = #{contractTypeId}
+                </if>
+                AND total_rate between 0 and ${rate}
+                AND delete_yn = 'N'
+                ORDER BY ${sort} DESC
+            ) a, members m
+            WHERE a.user_id = m.user_id
+        ) a LEFT OUTER JOIN user_review_zzim_log z
+        ON a.review_id = z.review_id
+        WHERE rnum between ${offset} and  ( ${offset} + ${limit} - 1 )
     </select>
 
-    <select id="searchByFilterTotalCount" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+    <select id="searchByFilterTotalCount">
         SELECT COUNT(*)
         FROM (
-        SELECT a.*, ROWNUM as rnum FROM (
-        SELECT *
-        FROM user_review
-        WHERE 1=1
-        <choose>
-            <when test="gu != null and gu != ''">
-                AND jibun like '%' || #{gu} || '%'
-            </when>
-        </choose>
-        <choose>
-            <when test="dong != null and dong != ''">
-                AND jibun like '%' || #{dong} || '%'
-            </when>
-        </choose>
-        <choose>
-            <when test="contractTypeId != null and contractTypeId != ''">
-                AND contract_type_id = #{contractTypeId}
-            </when>
-        </choose>
-        AND total_rate between 0 and #{rate}
-        ORDER BY #{sort} DESC
+            SELECT a.*, ROWNUM as rnum
+            FROM (
+                SELECT *
+                FROM user_review
+                WHERE 1=1
+                <if test="gu != null and gu != ''">
+                    AND jibun like '%' || #{gu} || '%'
+                </if>
+                <if test="dong != null and dong != ''">
+                    AND jibun like '%' || #{dong} || '%'
+                </if>
+                <if test="contractTypeId != null and contractTypeId != ''">
+                    AND contract_type_id = #{contractTypeId}
+                </if>
+                AND total_rate between 0 and ${rate}
+                AND delete_yn = 'N'
+                ORDER BY ${sort} DESC
+            ) a
         )
-        a)
-        WHERE rnum between #{offset} and  ( #{offset} + #{limit} - 1 )
     </select>
 
-    <update id="update">
+    <update id="updateReview" parameterType="map">
         UPDATE user_review
         SET
-            total_rate = #{totalRate},
-            trans_rate = #{transRate},
-            manage_rate = #{manageRate},
-            infra_rate = #{infraRate},
-            life_rate = #{lifeRate},
-            title = #{title},
-            description = #{description},
-            jibun = #{jibun},
-            pos = #{pos},
-            floors_count = #{floorsCount},
-            pyung_count = #{pyungCount},
-            room_info = #{roomInfo},
-            room_option = #{roomOption},
-            contract_type_id = #{contractTypeId},
-            start_date = #{startDate},
-            end_date = #{endDate}
+            total_rate = #{reviewUpdateRequest.totalRate},
+            trans_rate = #{reviewUpdateRequest.transRate},
+            manage_rate = #{reviewUpdateRequest.manageRate},
+            infra_rate = #{reviewUpdateRequest.infraRate},
+            life_rate = #{reviewUpdateRequest.lifeRate},
+            title = #{reviewUpdateRequest.title},
+            description = #{reviewUpdateRequest.description},
+            jibun = #{reviewUpdateRequest.jibun},
+            pos = #{reviewUpdateRequest.pos},
+            floors_count = #{reviewUpdateRequest.floorsCount},
+            pyung_count = #{reviewUpdateRequest.pyungCount},
+            room_info = #{reviewUpdateRequest.roomInfo},
+            room_option = #{reviewUpdateRequest.roomOption},
+            contract_type_id = #{reviewUpdateRequest.contractTypeId},
+            start_date = #{reviewUpdateRequest.startDate},
+            <choose>
+                <when test="reviewUpdateRequest.endDate !=null and !reviewUpdateRequest.endDate.equals('')">
+                    end_date = #{reviewUpdateRequest.endDate}
+                </when>
+                <otherwise>
+                    end_date = ''
+                </otherwise>
+            </choose>
         WHERE 1=1
-        AND review_id = #{reviewId}
-        AND user_id = #{userId}
+        AND review_id = #{reviewUpdateRequest.reviewId}
+        AND user_id = #{reviewUpdateRequest.userId}
     </update>
 
-    <update id="delete">
+    <update id="deleteReview" parameterType="map">
         UPDATE user_review
         SET
             delete_yn = 'Y'
         WHERE 1=1
-        AND review_id = #{reviewId}
-        AND user_id = #{userId}
+        AND review_id = #{reviewDeleteRequest.reviewId}
+        AND user_id = #{reviewDeleteRequest.userId}
     </update>
 
     <select id="searchMyReview" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
@@ -201,4 +199,11 @@
         and delete_yn = 'N'
     </select>
 
+
+    <select id="selectAllPos" resultType="com.kh.zipplanet.domain.review.model.PosVo">
+        SELECT SUBSTR(POS, 0, INSTR(pos, ',', 1, 1)-1) as lat, SUBSTR(POS, INSTR(pos, ',', 1, 1)+1) as lng, pos
+        FROM USER_REVIEW
+        WHERE 1=1
+        AND DELETE_YN = 'N'
+    </select>
 </mapper>
