@@ -193,4 +193,12 @@
         AND review_id = #{reviewId}
         AND user_id = #{userId}
     </update>
+
+    <select id="searchMyReview" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+        select * from user_review
+        where 1=1
+        and user_id = #{userId}
+        and delete_yn = 'N'
+    </select>
+
 </mapper>

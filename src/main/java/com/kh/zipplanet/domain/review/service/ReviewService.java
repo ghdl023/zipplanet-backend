@@ -47,4 +47,8 @@ public class ReviewService {
     public int delete(ReviewDeleteRequest reviewDeleteRequest) {
         return reviewMapper.delete(reviewDeleteRequest);
     }
+
+    public List<ReviewVo> searchMyReview(int userId){
+        return reviewMapper.searchMyReview(userId);
+    }
 }

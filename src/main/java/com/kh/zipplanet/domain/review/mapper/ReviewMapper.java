@@ -26,4 +26,6 @@ public interface ReviewMapper {
     int update(ReviewUpdateRequest reviewUpdateRequest);
 
     int delete(ReviewDeleteRequest reviewDeleteRequest);
+
+    List<ReviewVo> searchMyReview(@Param("userId") int userId);
 }
