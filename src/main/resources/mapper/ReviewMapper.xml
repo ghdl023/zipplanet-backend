@@ -38,7 +38,7 @@
     </insert>
 
     <select id="searchByPos" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        SELECT a.*, NVL(z.zzim_yn, 'N') as zzim_yn
+        SELECT a.*, CASE WHEN(z.user_id = #{userId}) THEN NVL(z.zzim_yn, 'N') ELSE 'N' END as zzim_yn
         FROM (
             SELECT a.*, m.nickname as creator, ROWNUM as rnum
             FROM (
@@ -70,7 +70,7 @@
     </select>
 
     <select id="searchByKeyword" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        SELECT a.*, NVL(z.zzim_yn, 'N') as zzim_yn
+        SELECT a.*, CASE WHEN(z.user_id = #{userId}) THEN NVL(z.zzim_yn, 'N') ELSE 'N' END as zzim_yn
         FROM (
             SELECT a.*, m.nickname as creator, ROWNUM as rnum
             FROM (
@@ -102,7 +102,7 @@
     </select>
 
     <select id="searchByFilter" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        SELECT a.*, NVL(z.zzim_yn, 'N') as zzim_yn
+        SELECT a.*, CASE WHEN(z.user_id = #{userId}) THEN NVL(z.zzim_yn, 'N') ELSE 'N' END as zzim_yn
         FROM (
             SELECT a.*, m.nickname as creator, ROWNUM as rnum
             FROM (

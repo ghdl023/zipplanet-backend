@@ -76,6 +76,7 @@ public class ReviewController {
     @GetMapping("/search")
     @ResponseBody
     public ResponseEntity<CommonResponse> searchV2(
+            @RequestParam(value="userId", defaultValue = "") String userId,
             @RequestParam(value="searchType") String searchType,
             @RequestParam(value="keyword", defaultValue = "") String keyword,
             @RequestParam(value="gu", defaultValue = "") String gu,
@@ -91,6 +92,7 @@ public class ReviewController {
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
+        System.out.println("userId:" + userId);
         System.out.println("searchType:" + searchType);
         System.out.println("keyword:" + keyword);
         System.out.println("gu:" + gu);
@@ -105,7 +107,7 @@ public class ReviewController {
         List<ReviewVo> reviewList = null;
         int totalCount = 0;
         try {
-            reviewList = reviewService.search(searchType, keyword, gu, dong, contractTypeId, rate, pos, sort, offset, limit);
+            reviewList = reviewService.search(searchType, keyword, gu, dong, contractTypeId, rate, pos, sort, offset, limit, userId);
             totalCount = reviewService.searchTotalCount(searchType, keyword, gu, dong, contractTypeId, rate, pos, sort, offset, limit);
             System.out.println(totalCount);
         } catch(Exception e) {

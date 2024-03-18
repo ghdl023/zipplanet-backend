@@ -17,13 +17,13 @@ public class ReviewService {
         return reviewMapper.createReview(reviewCreateRequest);
     }
 
-    public List<ReviewVo> search(String searchType, String keyword, String gu, String dong, String contractTypeId, int rate, String pos, String sort, int offset, int limit) {
+    public List<ReviewVo> search(String searchType, String keyword, String gu, String dong, String contractTypeId, int rate, String pos, String sort, int offset, int limit, String userId) {
         if(searchType.equals("pos")) {
-            return reviewMapper.searchByPos(pos, sort, offset, limit);
+            return reviewMapper.searchByPos(pos, sort, offset, limit, userId);
         } else if(searchType.equals(("keyword"))){
-            return reviewMapper.searchByKeyword(keyword, sort, offset, limit);
+            return reviewMapper.searchByKeyword(keyword, sort, offset, limit, userId);
         } else {
-            return reviewMapper.searchByFilter(gu, dong, contractTypeId, rate, sort, offset, limit);
+            return reviewMapper.searchByFilter(gu, dong, contractTypeId, rate, sort, offset, limit, userId);
         }
     }
 
