@@ -52,4 +52,8 @@ public class ReviewService {
     public ReviewVo findById(String reviewId, String userId) {
         return reviewMapper.findById(reviewId, userId);
     }
+
+    public List<ReviewVo> searchMyReview(int userId){
+        return reviewMapper.searchMyReview(userId);
+    }
 }

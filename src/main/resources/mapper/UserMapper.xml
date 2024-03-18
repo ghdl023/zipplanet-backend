@@ -55,4 +55,19 @@
         and username = #{username}
         and phone = #{phone}
     </select>
+
+    <update id="updateUser">
+        update members
+        set password = #{password},
+        nickname = #{nickname},
+        address = #{address},
+        phone = #{phone}
+        where 1=1
+        and username = #{username}
+    </update>
+
+    <select id="findUnique" resultType="com.kh.zipplanet.domain.user.model.User">
+        select * from members
+        where username = #{username} or nickname = #{nickname} or phone = #{phone}
+    </select>
 </mapper>

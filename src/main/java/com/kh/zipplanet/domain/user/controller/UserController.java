@@ -150,4 +150,46 @@ public class UserController {
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
+
+    @PostMapping("/updateUser")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        int result = 0;
+        User username = null;
+        User nickname = null;
+        User phone = null;
+        try {
+            username = userService.findUniqueUsername(userUpdateRequest.getUsername());
+            nickname = userService.findUniqueNickname(userUpdateRequest.getNickname());
+            phone = userService.findUniquePhone(userUpdateRequest.getPhone());
+            if (nickname != null && !username.getUsername().equals(nickname.getUsername())) {
+                response.setMessage("이미 사용중인 닉네임입니다.");
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+            }
+            if (phone != null && !username.getUsername().equals(phone.getUsername())){
+                response.setMessage("이미 사용중인 휴대폰번호입니다.");
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+            }
+            if (userUpdateRequest.getAddress() == null){
+                userUpdateRequest.setAddress("");
+            }
+            result = userService.updateUser(userUpdateRequest);
+            if (result == 0) {
+                response.setMessage("회원정보 변경에 실패하였습니다.");
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+            }
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(result);
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
 }

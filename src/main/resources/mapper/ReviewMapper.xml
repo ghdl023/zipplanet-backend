@@ -214,4 +214,11 @@
         ) a LEFT OUTER JOIN user_review_zzim_log z
         ON a.review_id = z.review_id
     </select>
+
+    <select id="searchMyReview" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+        select * from user_review
+        where 1=1
+        and user_id = #{userId}
+        and delete_yn = 'N'
+    </select>
 </mapper>

@@ -27,4 +27,6 @@ public interface ReviewMapper {
     List<PosVo> selectAllPos();
 
     ReviewVo findById(@Param("reviewId") String reviewId, @Param("userId") String userId);
+
+    List<ReviewVo> searchMyReview(@Param("userId") int userId);
 }

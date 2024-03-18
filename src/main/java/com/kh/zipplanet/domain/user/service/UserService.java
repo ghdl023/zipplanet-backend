@@ -2,6 +2,7 @@ package com.kh.zipplanet.domain.user.service;
 
 import com.kh.zipplanet.domain.user.mapper.UserMapper;
 import com.kh.zipplanet.domain.user.model.*;
+import com.kh.zipplanet.domain.user.model.UserUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,4 +35,17 @@ public class UserService {
         return mapper.findPwd(userFindPwdRequest.getUsername(), userFindPwdRequest.getPhone());
     }
 
+    public int updateUser(UserUpdateRequest userUpdateRequest) throws Exception {
+        return mapper.updateUser(userUpdateRequest);
+    }
+
+    public User findUniqueUsername(String username) throws Exception {
+        return mapper.findUnique(username, "", "");
+    }
+    public User findUniqueNickname(String nickname) throws Exception {
+        return mapper.findUnique("" , nickname, "");
+    }
+    public User findUniquePhone(String phone) throws Exception {
+        return mapper.findUnique("", "", phone);
+    }
 }
