@@ -293,4 +293,29 @@ public class ReviewController {
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
+
+    @PostMapping("/searchMyZzim")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> searchMyReview(@RequestBody ReviewSearchRequest reviewSearchRequest){
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        List<ReviewVo> reviewVoList = null;
+        try {
+            reviewVoList = reviewService.searchMyZzim(reviewSearchRequest.getUserId());
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        if(reviewVoList == null){
+            response.setMessage("찜한 리뷰가 없습니다.");
+            return new ResponseEntity<>(response, headers, HttpStatus.OK);
+        }
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(reviewVoList);
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
 }

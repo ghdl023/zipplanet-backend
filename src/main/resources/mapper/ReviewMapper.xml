@@ -214,4 +214,12 @@
         and user_id = #{userId}
         and delete_yn = 'N'
     </select>
+
+    <select id="searchMyZzim" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+        select * from user_review
+        where review_id in (
+        select review_id from user_review_zzim_log
+        where user_id = '10000' and zzim_yn = 'Y'
+        )and 1 = 1 and delete_yn = 'N'
+    </select>
 </mapper>

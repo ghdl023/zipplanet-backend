@@ -63,4 +63,8 @@ public class ReviewService {
         return reviewMapper.searchMyReview(userId);
     }
 
+    public List<ReviewVo> searchMyZzim(int userId){
+        return reviewMapper.searchMyZzim(userId);
+    }
+
 }
