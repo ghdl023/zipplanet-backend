@@ -50,10 +50,17 @@ public class ReviewService {
     }
 
     public ReviewVo findById(String reviewId, String userId) {
-        return reviewMapper.findById(reviewId, userId);
+        ReviewVo result = reviewMapper.findById(reviewId, userId);
+        upHit(reviewId);
+        return result;
+    }
+
+    private int upHit(String reviewId) {
+        return reviewMapper.upHit(reviewId);
     }
 
     public List<ReviewVo> searchMyReview(int userId){
         return reviewMapper.searchMyReview(userId);
     }
+
 }

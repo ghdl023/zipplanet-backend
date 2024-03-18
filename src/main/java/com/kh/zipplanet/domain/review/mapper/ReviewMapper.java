@@ -28,5 +28,7 @@ public interface ReviewMapper {
 
     ReviewVo findById(@Param("reviewId") String reviewId, @Param("userId") String userId);
 
+    int upHit(@Param("reviewId") String reviewId);
+
     List<ReviewVo> searchMyReview(@Param("userId") int userId);
 }
