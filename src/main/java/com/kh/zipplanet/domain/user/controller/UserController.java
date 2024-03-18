@@ -192,4 +192,29 @@ public class UserController {
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
+    @PostMapping("/deleteUser")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> deleteUser(@RequestBody String username) {
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        int result = 0;
+        try {
+            result = userService.deleteUser(username);
+
+            if (result == 0) {
+                response.setMessage("회원정보 탈퇴를 실패하였습니다.");
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+            }
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(result);
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
 }
