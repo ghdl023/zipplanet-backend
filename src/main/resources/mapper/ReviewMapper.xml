@@ -38,53 +38,6 @@
     </insert>
 
     <select id="searchByPos" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        SELECT a.*, CASE WHEN(z.user_id = #{userId}) THEN NVL(z.zzim_yn, 'N') ELSE 'N' END as zzim_yn
-        FROM (
-            SELECT a.*, m.nickname as creator, ROWNUM as rnum
-            FROM (
-                SELECT *
-                FROM user_review
-                WHERE 1=1
-                AND pos = #{pos}
-                AND delete_yn = 'N'
-                ORDER BY ${sort} DESC
-            ) a, members m
-            WHERE a.user_id = m.user_id
-        ) a LEFT OUTER JOIN user_review_zzim_log z
-        ON a.review_id = z.review_id
-        WHERE rnum between ${offset} and  ( ${offset} + ${limit} - 1 )
-    </select>
-
-    <select id="searchByPosTotalCount">
-        SELECT COUNT(*)
-        FROM (
-            SELECT a.*, ROWNUM as rnum
-            FROM (
-                SELECT *
-                FROM user_review
-                WHERE 1=1
-                AND pos = #{pos}
-                AND delete_yn = 'N'
-            ) a
-        )
-    </select>
-
-    <select id="searchByKeyword" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-<!--        SELECT a.*, CASE WHEN(z.user_id = #{userId}) THEN NVL(z.zzim_yn, 'N') ELSE 'N' END as zzim_yn-->
-<!--        FROM (-->
-<!--            SELECT a.*, m.nickname as creator, ROWNUM as rnum-->
-<!--            FROM (-->
-<!--                SELECT *-->
-<!--                FROM user_review-->
-<!--                WHERE 1=1-->
-<!--                AND jibun like '%' || #{keyword} || '%'-->
-<!--                AND delete_yn = 'N'-->
-<!--                ORDER BY ${sort} DESC-->
-<!--            ) a, members m-->
-<!--            WHERE a.user_id = m.user_id-->
-<!--        ) a LEFT OUTER JOIN user_review_zzim_log z-->
-<!--        ON a.review_id = z.review_id-->
-<!--        WHERE rnum between ${offset} and ( ${offset} + ${limit} - 1 )-->
         SELECT A.*
         FROM (
             SELECT A.*, (SELECT COUNT(*) FROM USER_REVIEW_ZZIM_LOG WHERE REVIEW_ID = A.REVIEW_ID AND ZZIM_YN = 'Y') AS LIKE_COUNT, ROWNUM AS RNUM
@@ -95,9 +48,37 @@
                     FROM USER_REVIEW R
                     JOIN MEMBERS M ON (M.USER_ID = R.USER_ID)
                     WHERE 1=1
-                    AND JIBUN LIKE '%' || '' || '%'
+                    AND POS = #{pos}
                     AND R.DELETE_YN = 'N'
-                    ORDER BY CREATE_DATE DESC
+                    ORDER BY R.CREATE_DATE DESC
+                ) A LEFT OUTER JOIN USER_REVIEW_ZZIM_LOG Z ON (A.REVIEW_ID = Z.REVIEW_ID AND Z.USER_ID = #{userId})
+            ) A
+        ) A
+        WHERE RNUM BETWEEN ${offset} AND ( ${offset} + ${limit} - 1 )
+    </select>
+
+    <select id="searchByPosTotalCount">
+        SELECT COUNT(*)
+        FROM USER_REVIEW
+        WHERE 1=1
+        AND POS = #{pos}
+        AND DELETE_YN = 'N'
+    </select>
+
+    <select id="searchByKeyword" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+        SELECT A.*
+        FROM (
+            SELECT A.*, (SELECT COUNT(*) FROM USER_REVIEW_ZZIM_LOG WHERE REVIEW_ID = A.REVIEW_ID AND ZZIM_YN = 'Y') AS LIKE_COUNT, ROWNUM AS RNUM
+            FROM (
+                SELECT A.*, NVL(Z.ZZIM_YN, 'N') AS ZZIM_YN
+                FROM (
+                    SELECT R.*, M.NICKNAME AS CREATOR
+                    FROM USER_REVIEW R
+                    JOIN MEMBERS M ON (M.USER_ID = R.USER_ID)
+                    WHERE 1=1
+                    AND JIBUN LIKE '%' || #{keyword} || '%'
+                    AND R.DELETE_YN = 'N'
+                    ORDER BY R.CREATE_DATE DESC
                 ) A LEFT OUTER JOIN USER_REVIEW_ZZIM_LOG Z ON (A.REVIEW_ID = Z.REVIEW_ID AND Z.USER_ID = #{userId})
             ) A
         ) A
@@ -106,67 +87,56 @@
 
     <select id="searchByKeywordTotalCount">
         SELECT COUNT(*)
-        FROM (
-            SELECT a.*, ROWNUM as rnum
-            FROM (
-                SELECT *
-                FROM user_review
-                WHERE 1=1
-                AND jibun like '%' || #{keyword} || '%'
-                AND delete_yn = 'N'
-            ) a
-        )
+        FROM USER_REVIEW
+        WHERE 1=1
+        AND JIBUN LIKE '%' || #{keyword} || '%'
+        AND DELETE_YN = 'N'
     </select>
 
     <select id="searchByFilter" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        SELECT a.*, CASE WHEN(z.user_id = #{userId}) THEN NVL(z.zzim_yn, 'N') ELSE 'N' END as zzim_yn
+        SELECT A.*
         FROM (
-            SELECT a.*, m.nickname as creator, ROWNUM as rnum
+            SELECT A.*, (SELECT COUNT(*) FROM USER_REVIEW_ZZIM_LOG WHERE REVIEW_ID = A.REVIEW_ID AND ZZIM_YN = 'Y') AS LIKE_COUNT, ROWNUM AS RNUM
             FROM (
-                SELECT *
-                FROM user_review
-                WHERE 1=1
-                <if test="gu != null and gu != ''">
-                    AND jibun like '%' || #{gu} || '%'
-                </if>
-                <if test="dong != null and dong != ''">
-                    AND jibun like '%' || #{dong} || '%'
-                </if>
-                <if test="contractTypeId != null and contractTypeId != ''">
-                    AND contract_type_id = #{contractTypeId}
-                </if>
-                AND total_rate between 0 and ${rate}
-                AND delete_yn = 'N'
-                ORDER BY ${sort} DESC
-            ) a, members m
-            WHERE a.user_id = m.user_id
-        ) a LEFT OUTER JOIN user_review_zzim_log z
-        ON a.review_id = z.review_id
-        WHERE rnum between ${offset} and  ( ${offset} + ${limit} - 1 )
+                SELECT A.*, NVL(Z.ZZIM_YN, 'N') AS ZZIM_YN
+                FROM (
+                    SELECT R.*, M.NICKNAME AS CREATOR
+                    FROM USER_REVIEW R
+                    JOIN MEMBERS M ON (M.USER_ID = R.USER_ID)
+                    WHERE 1=1
+                    <if test="gu != null and gu != ''">
+                        AND JIBUN LIKE '%' || #{gu} || '%'
+                    </if>
+                    <if test="dong != null and dong != ''">
+                        AND JIBUN LIKE '%' || #{dong} || '%'
+                    </if>
+                    <if test="contractTypeId != null and contractTypeId != ''">
+                        AND CONTRACT_TYPE_ID = #{contractTypeId}
+                    </if>
+                    AND TOTAL_RATE BETWEEN 0 AND #{rate}
+                    AND R.DELETE_YN = 'N'
+                    ORDER BY R.CREATE_DATE DESC
+                ) A LEFT OUTER JOIN USER_REVIEW_ZZIM_LOG Z ON (A.REVIEW_ID = Z.REVIEW_ID AND Z.USER_ID = #{userId})
+            ) A
+        ) A
+        WHERE RNUM BETWEEN ${offset} AND ( ${offset} + ${limit} - 1 )
     </select>
 
     <select id="searchByFilterTotalCount">
         SELECT COUNT(*)
-        FROM (
-            SELECT a.*, ROWNUM as rnum
-            FROM (
-                SELECT *
-                FROM user_review
-                WHERE 1=1
-                <if test="gu != null and gu != ''">
-                    AND jibun like '%' || #{gu} || '%'
-                </if>
-                <if test="dong != null and dong != ''">
-                    AND jibun like '%' || #{dong} || '%'
-                </if>
-                <if test="contractTypeId != null and contractTypeId != ''">
-                    AND contract_type_id = #{contractTypeId}
-                </if>
-                AND total_rate between 0 and ${rate}
-                AND delete_yn = 'N'
-                ORDER BY ${sort} DESC
-            ) a
-        )
+        FROM USER_REVIEW
+        WHERE 1=1
+        <if test="gu != null and gu != ''">
+            AND JIBUN LIKE '%' || #{gu} || '%'
+        </if>
+        <if test="dong != null and dong != ''">
+            AND JIBUN LIKE '%' || #{dong} || '%'
+        </if>
+        <if test="contractTypeId != null and contractTypeId != ''">
+            AND CONTRACT_TYPE_ID = #{contractTypeId}
+        </if>
+        AND TOTAL_RATE BETWEEN 0 AND #{rate}
+        AND DELETE_YN = 'N'
     </select>
 
     <update id="updateReview" parameterType="map">
