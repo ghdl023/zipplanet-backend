@@ -48,4 +48,8 @@ public class ReviewService {
     public List<PosVo> selectAllPos() {
         return reviewMapper.selectAllPos();
     }
+
+    public ReviewVo findById(String reviewId, String userId) {
+        return reviewMapper.findById(reviewId, userId);
+    }
 }

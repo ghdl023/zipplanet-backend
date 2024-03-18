@@ -25,4 +25,6 @@ public interface ReviewMapper {
     int deleteReview(@Param("reviewDeleteRequest") ReviewDeleteRequest reviewDeleteRequest);
 
     List<PosVo> selectAllPos();
+
+    ReviewVo findById(@Param("reviewId") String reviewId, @Param("userId") String userId);
 }

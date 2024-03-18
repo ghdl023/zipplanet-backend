@@ -243,4 +243,27 @@ public class ReviewController {
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
+
+    @GetMapping("/detail")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> detail(@RequestParam(value = "id") String reviewId, @RequestParam(value = "uid", defaultValue = "") String userId) {
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        System.out.println("reviewId: " + reviewId);
+        System.out.println("userId: " + userId);
+
+        ReviewVo result = reviewService.findById(reviewId, userId);
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(result);
+
+        if(result == null) {
+            response.setMessage("조회된 결과가 없습니다.");
+        }
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
 }

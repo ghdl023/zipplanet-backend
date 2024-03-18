@@ -198,4 +198,20 @@
         WHERE 1=1
         AND DELETE_YN = 'N'
     </select>
+
+    <select id="findById" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+        SELECT a.*, CASE WHEN(z.user_id = #{userId}) THEN NVL(z.zzim_yn, 'N') ELSE 'N' END as zzim_yn
+        FROM (
+            SELECT a.*, m.nickname as creator
+            FROM (
+                SELECT *
+                FROM user_review
+                WHERE 1=1
+                AND review_id = #{reviewId}
+                AND delete_yn = 'N'
+            ) a, members m
+            WHERE a.user_id = m.user_id
+        ) a LEFT OUTER JOIN user_review_zzim_log z
+        ON a.review_id = z.review_id
+    </select>
 </mapper>
