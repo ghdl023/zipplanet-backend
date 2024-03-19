@@ -17,7 +17,7 @@
             #{reviewReportRequest.reviewId},
             #{reviewReportRequest.userId},
             #{reviewReportRequest.reportTypeId},
-            'Y',
+            'N',
             SYSDATE
         )
     </insert>

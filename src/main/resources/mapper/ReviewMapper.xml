@@ -209,17 +209,26 @@
     </update>
 
     <select id="searchMyReview" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        select * from user_review
-        where 1=1
-        and user_id = #{userId}
-        and delete_yn = 'N'
+        SELECT A.*, (SELECT COUNT(*) FROM USER_REVIEW_ZZIM_LOG WHERE REVIEW_ID = A.REVIEW_ID AND ZZIM_YN = 'Y') AS LIKE_COUNT
+        FROM (
+        SELECT A.*, NVL(Z.ZZIM_YN, 'N') AS ZZIM_YN
+        FROM (
+        SELECT R.*, M.NICKNAME AS CREATOR
+        FROM USER_REVIEW R
+        JOIN MEMBERS M ON (M.USER_ID = R.USER_ID)
+        WHERE 1=1
+        AND R.DELETE_YN = 'N'
+        AND R.USER_ID = #{userId}
+        ) A LEFT OUTER JOIN USER_REVIEW_ZZIM_LOG Z ON (A.REVIEW_ID = Z.REVIEW_ID AND Z.USER_ID = #{userId})
+        ) A
     </select>
 
     <select id="searchMyZzim" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
-        select * from user_review
-        where review_id in (
-        select review_id from user_review_zzim_log
-        where user_id = '10000' and zzim_yn = 'Y'
-        )and 1 = 1 and delete_yn = 'N'
+        SELECT R.*, Z.ZZIM_YN,  (SELECT COUNT(*) FROM USER_REVIEW_ZZIM_LOG WHERE REVIEW_ID = Z.REVIEW_ID AND ZZIM_YN = 'Y') AS LIKE_COUNT
+        FROM USER_REVIEW_ZZIM_LOG Z
+        JOIN USER_REVIEW R ON(Z.REVIEW_ID = R.REVIEW_ID)
+        WHERE 1=1
+        AND Z.USER_ID = #{userId}
+        AND Z.ZZIM_YN = 'Y'
     </select>
 </mapper>
