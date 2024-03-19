@@ -211,6 +211,15 @@
         ) A
     </select>
 
+    <select id="findByUserIdAndPos" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+        SELECT *
+        FROM USER_REVIEW
+        WHERE 1=1
+        AND USER_ID = ${userId}
+        AND POS = #{pos}
+        AND DELETE_YN = 'N'
+    </select>
+
     <update id="upHit">
         UPDATE user_review
         SET view_count = view_count + 1

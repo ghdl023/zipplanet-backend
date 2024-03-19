@@ -55,6 +55,11 @@ public class ReviewService {
         return result;
     }
 
+    public ReviewVo checkDuplicateByUserIdAndPos(int userId, String pos) {
+        ReviewVo result = reviewMapper.findByUserIdAndPos(userId, pos);
+        return result;
+    }
+
     private int upHit(String reviewId) {
         return reviewMapper.upHit(reviewId);
     }
