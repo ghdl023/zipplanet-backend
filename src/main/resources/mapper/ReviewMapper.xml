@@ -48,7 +48,12 @@
                     FROM USER_REVIEW R
                     JOIN MEMBERS M ON (M.USER_ID = R.USER_ID)
                     WHERE 1=1
-                    AND POS = #{pos}
+                    AND (
+                        POS = #{lat} || ',' || #{lng}
+                        OR POS = SUBSTR(#{lat}, 1, LENGTH(#{lat})-1) || ',' || #{lng}
+                        OR POS = #{lat} || ',' || SUBSTR(#{lng}, 1, LENGTH(#{lng})-1)
+                        OR POS = SUBSTR(#{lat}, 1, LENGTH(#{lat})-1) || ',' || SUBSTR(#{lng}, 1, LENGTH(#{lng})-1)
+                    )
                     AND R.DELETE_YN = 'N'
                     ORDER BY R.CREATE_DATE DESC
                 ) A LEFT OUTER JOIN USER_REVIEW_ZZIM_LOG Z ON (A.REVIEW_ID = Z.REVIEW_ID AND Z.USER_ID = #{userId})
@@ -61,7 +66,12 @@
         SELECT COUNT(*)
         FROM USER_REVIEW
         WHERE 1=1
-        AND POS = #{pos}
+        AND (
+            POS = #{lat} || ',' || #{lng}
+            OR POS = SUBSTR(#{lat}, 1, LENGTH(#{lat})-1) || ',' || #{lng}
+            OR POS = #{lat} || ',' || SUBSTR(#{lng}, 1, LENGTH(#{lng})-1)
+            OR POS = SUBSTR(#{lat}, 1, LENGTH(#{lat})-1) || ',' || SUBSTR(#{lng}, 1, LENGTH(#{lng})-1)
+        )
         AND DELETE_YN = 'N'
     </select>
 

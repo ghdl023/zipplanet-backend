@@ -13,8 +13,8 @@ public interface ReviewMapper {
 
     int createReview(@Param("reviewCreateRequest") ReviewCreateRequest reviewCreateRequest);
 
-    List<ReviewVo> searchByPos(@Param("pos") String pos, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit, @Param("userId") String userId);
-    int searchByPosTotalCount(@Param("pos") String pos, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit);
+    List<ReviewVo> searchByPos(@Param("lat") String lat, @Param("lng") String lng, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit, @Param("userId") String userId);
+    int searchByPosTotalCount(@Param("lat") String lat, @Param("lng") String lng, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit);
     List<ReviewVo> searchByKeyword(@Param("keyword") String keyword, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit, @Param("userId") String userId);
     int searchByKeywordTotalCount(@Param("keyword") String keyword, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit);
     List<ReviewVo> searchByFilter(@Param("gu") String gu, @Param("dong") String dong, @Param("contractTypeId") String contractTypeId, @Param("rate") int rate, @Param("sort") String sort, @Param("offset") int offset, @Param("limit") int limit, @Param("userId") String userId);
