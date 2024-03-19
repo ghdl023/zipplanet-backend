@@ -68,7 +68,7 @@ public class ReviewService {
         return reviewMapper.searchMyReview(userId);
     }
 
-
+    public List<ReviewMyReportRequest> searchMyReport(int userId) { return reviewMapper.searchMyReport(userId);}
 
     private String getLat(String pos) {
         if(pos == null || pos.equals("")) return "";

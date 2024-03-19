@@ -311,4 +311,29 @@ public class ReviewController {
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
+
+    @PostMapping("/searchMyReport")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> myReport(@RequestBody ReviewMyReportRequest reviewMyReportRequest){
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        List<ReviewMyReportRequest> reportList = null;
+        try {
+            reportList = reviewService.searchMyReport(reviewMyReportRequest.getUserId());
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        if (reportList == null) {
+            response.setMessage("신고 내역이 없습니다.");
+            return new ResponseEntity<>(response, headers, HttpStatus.OK);
+        }
+
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(reportList);
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
 }
