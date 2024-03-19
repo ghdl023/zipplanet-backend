@@ -39,7 +39,6 @@ public class ReviewController {
 
 //        System.out.println("create review !");
 //        System.out.println(reviewCreateRequest);
-
 //        System.out.println("userId : " + reviewCreateRequest.getUserId());
 //        System.out.println("totalRate : " + reviewCreateRequest.getTotalRate());
 //        System.out.println("transRate : " + reviewCreateRequest.getTransRate());
@@ -60,7 +59,17 @@ public class ReviewController {
 
         int result = 0;
         try {
-            result = reviewService.createReview(reviewCreateRequest);
+            ReviewVo review = reviewService.checkDuplicateByUserIdAndPos(reviewCreateRequest.getUserId(), reviewCreateRequest.getPos());
+//            System.out.println(review);
+            if(review == null) { // 같은 지번주소에 대한 리뷰가 없는 경우
+                result = reviewService.createReview(reviewCreateRequest);
+            } else {
+                response.setStatus(StatusEnum.OK);
+                response.setMessage("입력하신 지번주소에 대한 리뷰가 이미 존재합니다.");
+                response.setData(result);
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+            }
+
         } catch(Exception e) {
         }
         System.out.println(result);
@@ -136,7 +145,16 @@ public class ReviewController {
 
         int result = 0;
         try {
-            result = reviewService.updateReview(reviewUpdateRequest);
+            ReviewVo review = reviewService.checkDuplicateByUserIdAndPos(reviewUpdateRequest.getUserId(), reviewUpdateRequest.getPos());
+
+            if(review == null) { // 같은 지번주소에 대한 리뷰가 없는 경우
+                result = reviewService.updateReview(reviewUpdateRequest);
+            } else {
+                response.setStatus(StatusEnum.OK);
+                response.setMessage("입력하신 지번주소에 대한 리뷰가 이미 존재합니다.");
+                response.setData(result);
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+            }
         } catch(Exception e) {
         }
         System.out.println(result);

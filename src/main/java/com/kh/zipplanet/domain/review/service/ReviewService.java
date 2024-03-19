@@ -19,7 +19,7 @@ public class ReviewService {
 
     public List<ReviewVo> search(String searchType, String keyword, String gu, String dong, String contractTypeId, int rate, String pos, String sort, int offset, int limit, String userId) {
         if(searchType.equals("pos")) {
-            return reviewMapper.searchByPos(pos, sort, offset, limit, userId);
+            return reviewMapper.searchByPos(getLat(pos), getLng(pos), sort, offset, limit, userId);
         } else if(searchType.equals(("keyword"))){
             return reviewMapper.searchByKeyword(keyword, sort, offset, limit, userId);
         } else {
@@ -29,7 +29,7 @@ public class ReviewService {
 
     public int searchTotalCount(String searchType, String keyword, String gu, String dong, String contractTypeId, int rate, String pos, String sort, int offset, int limit) {
         if(searchType.equals("pos")) {
-            return reviewMapper.searchByPosTotalCount(pos, sort, offset, limit);
+            return reviewMapper.searchByPosTotalCount(getLat(pos), getLng(pos), sort, offset, limit);
         } else if(searchType.equals(("keyword"))){
             return reviewMapper.searchByKeywordTotalCount(keyword, sort, offset, limit);
         } else {
@@ -55,12 +55,29 @@ public class ReviewService {
         return result;
     }
 
+    public ReviewVo checkDuplicateByUserIdAndPos(int userId, String pos) {
+        ReviewVo result = reviewMapper.findByUserIdAndPos(userId, pos);
+        return result;
+    }
+
     private int upHit(String reviewId) {
         return reviewMapper.upHit(reviewId);
     }
 
     public List<ReviewVo> searchMyReview(int userId){
         return reviewMapper.searchMyReview(userId);
+    }
+
+
+
+    private String getLat(String pos) {
+        if(pos == null || pos.equals("")) return "";
+        return pos.split(",")[0];
+    }
+
+    private String getLng(String pos) {
+        if(pos == null || pos.equals("")) return "";
+        return pos.split(",")[1];
     }
 
     public List<ReviewVo> searchMyZzim(int userId){
