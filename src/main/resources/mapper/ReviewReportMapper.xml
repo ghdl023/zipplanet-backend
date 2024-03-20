@@ -29,4 +29,19 @@
             AND review_id = #{reviewId}
             AND user_id = #{userId}
     </select>
+
+    <select id="searchMyReport">
+        SELECT A.* , B.CNT AS LIKE_COUNT
+        FROM (
+        SELECT R.*, Z.REPORT_ID , Z.CREATE_DATE AS REPORT_DATE, Z.SOLVE_YN, Z.REPORT_TYPE_ID
+        FROM USER_REVIEW_REPORT_LOG Z
+        JOIN USER_REVIEW R ON(Z.REVIEW_ID = R.REVIEW_ID)
+        WHERE 1=1
+        AND Z.USER_ID = #{userId}
+        ) A LEFT OUTER JOIN (
+        SELECT REVIEW_ID AS RID, ZZIM_YN AS ZYN, COUNT(*) AS CNT
+        FROM USER_REVIEW_ZZIM_LOG
+        WHERE ZZIM_YN = 'Y'
+        GROUP BY REVIEW_ID, ZZIM_YN) B ON A.REVIEW_ID = B.RID
+    </select>
 </mapper>

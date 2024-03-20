@@ -1,9 +1,12 @@
 package com.kh.zipplanet.domain.review.service;
 
 import com.kh.zipplanet.domain.review.mapper.ReviewZzimMapper;
+import com.kh.zipplanet.domain.review.model.ReviewVo;
 import com.kh.zipplanet.domain.review.model.ReviewZzimRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ReviewZzimService {
@@ -29,4 +32,9 @@ public class ReviewZzimService {
 
         return result;
     }
+
+    public List<ReviewVo> searchMyZzim(int userId){
+        return reviewZzimMapper.searchMyZzim(userId);
+    }
+
 }

@@ -30,4 +30,13 @@
         AND user_id = #{userId}
         AND review_id = #{reviewId}
     </update>
+
+    <select id="searchMyZzim" resultType="com.kh.zipplanet.domain.review.model.ReviewVo">
+        SELECT R.*, Z.ZZIM_YN,  (SELECT COUNT(*) FROM USER_REVIEW_ZZIM_LOG WHERE REVIEW_ID = Z.REVIEW_ID AND ZZIM_YN = 'Y') AS LIKE_COUNT
+        FROM USER_REVIEW_ZZIM_LOG Z
+        JOIN USER_REVIEW R ON(Z.REVIEW_ID = R.REVIEW_ID)
+        WHERE 1=1
+        AND Z.USER_ID = #{userId}
+        AND Z.ZZIM_YN = 'Y'
+    </select>
 </mapper>

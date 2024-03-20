@@ -323,7 +323,7 @@ public class ReviewController {
 
          List<ReviewVo> reviewVoList = null;
           try {
-              reviewVoList = reviewService.searchMyZzim(Integer.parseInt(userId));
+              reviewVoList = reviewZzimService.searchMyZzim(Integer.parseInt(userId));
           } catch (Exception e){
               System.out.println(e);
           }
@@ -348,7 +348,7 @@ public class ReviewController {
         List<ReviewMyReportRequest> reportList = null;
         System.out.println(userId);
         try {
-            reportList = reviewService.searchMyReport(Integer.parseInt(userId));
+            reportList = reviewReportService.searchMyReport(Integer.parseInt(userId));
         } catch (Exception e){
             System.out.println(e);
         }
