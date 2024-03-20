@@ -34,5 +34,7 @@ public interface ReviewMapper {
 
     List<ReviewVo> searchMyReview(@Param("userId") int userId);
 
+    List<ReviewVo> searchMyZzim(@Param("userId") int userId);
+
     List<ReviewMyReportRequest> searchMyReport(@Param("userId") int userId);
 }

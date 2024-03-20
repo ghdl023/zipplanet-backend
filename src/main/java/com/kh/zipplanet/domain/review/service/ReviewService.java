@@ -80,4 +80,8 @@ public class ReviewService {
         return pos.split(",")[1];
     }
 
+    public List<ReviewVo> searchMyZzim(int userId){
+        return reviewMapper.searchMyZzim(userId);
+    }
+
 }
