@@ -30,4 +30,6 @@ public interface UserMapper {
     User findUnique(@Param("username") String username, @Param("nickname") String nickname, @Param("phone") String phone);
 
     int deleteUser(@Param("username") String username);
+
+    int comebackUser(@Param("username") String username);
 }

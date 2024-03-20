@@ -52,4 +52,8 @@ public class UserService {
     public int deleteUser(String username) throws Exception {
         return mapper.deleteUser(username);
     }
+
+    public int comebackUser(String username) throws Exception {
+        return mapper.comebackUser(username);
+    }
 }
