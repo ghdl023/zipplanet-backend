@@ -312,28 +312,54 @@ public class ReviewController {
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
+
     @GetMapping("/searchMyZzim")
     @ResponseBody
     public ResponseEntity<CommonResponse> searchMyReview(@RequestParam(value = "userId") String userId){
+        
         CommonResponse response = new CommonResponse();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        List<ReviewVo> reviewVoList = null;
+         List<ReviewVo> reviewVoList = null;
+          try {
+              reviewVoList = reviewService.searchMyZzim(Integer.parseInt(userId));
+          } catch (Exception e){
+              System.out.println(e);
+          }
+          if(reviewVoList == null){
+              response.setMessage("찜한 리뷰가 없습니다.");
+              return new ResponseEntity<>(response, headers, HttpStatus.OK);
+          }
+          response.setStatus(StatusEnum.OK);
+          response.setMessage("success");
+          response.setData(reviewVoList);
+          return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+  
+    @GetMapping("/searchMyReport")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> myReport(@RequestParam(value = "userId") String userId){
+
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        List<ReviewMyReportRequest> reportList = null;
+        System.out.println(userId);
         try {
-            reviewVoList = reviewService.searchMyZzim(Integer.parseInt(userId));
+            reportList = reviewService.searchMyReport(Integer.parseInt(userId));
         } catch (Exception e){
             System.out.println(e);
         }
-        if(reviewVoList == null){
-            response.setMessage("찜한 리뷰가 없습니다.");
+        if (reportList == null) {
+            response.setMessage("신고 내역이 없습니다.");
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
         }
 
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
-        response.setData(reviewVoList);
-
+        response.setData(reportList);
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 }

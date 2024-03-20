@@ -29,6 +29,7 @@
         where 1=1
         and username = #{username}
         and password = #{password}
+        and delete_yn = 'N'
     </select>
 
     <insert id="signUp" parameterType="com.kh.zipplanet.domain.user.model.UserSignupRequest">
@@ -70,4 +71,12 @@
         select * from members
         where username = #{username} or nickname = #{nickname} or phone = #{phone}
     </select>
+
+    <update id="deleteUser">
+        update members set
+        nickname = null,
+        delete_yn = 'Y'
+        where 1=1
+        and username = #{username}
+    </update>
 </mapper>
