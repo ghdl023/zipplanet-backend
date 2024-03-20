@@ -312,16 +312,17 @@ public class ReviewController {
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
-    @PostMapping("/searchMyReport")
+    @GetMapping("/searchMyReport")
     @ResponseBody
-    public ResponseEntity<CommonResponse> myReport(@RequestBody ReviewMyReportRequest reviewMyReportRequest){
+    public ResponseEntity<CommonResponse> myReport(@RequestParam(value = "userId") String userId){
         CommonResponse response = new CommonResponse();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         List<ReviewMyReportRequest> reportList = null;
+        System.out.println(userId);
         try {
-            reportList = reviewService.searchMyReport(reviewMyReportRequest.getUserId());
+            reportList = reviewService.searchMyReport(Integer.parseInt(userId));
         } catch (Exception e){
             System.out.println(e);
         }
