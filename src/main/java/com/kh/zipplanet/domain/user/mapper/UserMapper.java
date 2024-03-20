@@ -28,4 +28,6 @@ public interface UserMapper {
     int updateUser(UserUpdateRequest userUpdateRequest);
 
     User findUnique(@Param("username") String username, @Param("nickname") String nickname, @Param("phone") String phone);
+
+    int deleteUser(@Param("username") String username);
 }

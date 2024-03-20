@@ -48,4 +48,8 @@ public class UserService {
     public User findUniquePhone(String phone) throws Exception {
         return mapper.findUnique("", "", phone);
     }
+
+    public int deleteUser(String username) throws Exception {
+        return mapper.deleteUser(username);
+    }
 }
