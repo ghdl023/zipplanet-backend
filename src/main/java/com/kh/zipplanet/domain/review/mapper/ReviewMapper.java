@@ -33,4 +33,6 @@ public interface ReviewMapper {
     int upHit(@Param("reviewId") String reviewId);
 
     List<ReviewVo> searchMyReview(@Param("userId") int userId);
+
+    List<ReviewMyReportRequest> searchMyReport(@Param("userId") int userId);
 }
