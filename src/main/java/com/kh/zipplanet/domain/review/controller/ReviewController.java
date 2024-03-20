@@ -287,16 +287,16 @@ public class ReviewController {
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
-    @PostMapping("/searchMyReview")
+    @GetMapping("/searchMyReview")
     @ResponseBody
-    public ResponseEntity<CommonResponse> search(@RequestBody ReviewSearchRequest reviewSearchRequest) {
+    public ResponseEntity<CommonResponse> search(@RequestParam(value = "userId") String userId) {
         CommonResponse response = new CommonResponse();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         List<ReviewVo> reviewVoList = null;
         try {
-            reviewVoList = reviewService.searchMyReview(reviewSearchRequest.getUserId());
+            reviewVoList = reviewService.searchMyReview(Integer.parseInt(userId));
         } catch (Exception e){
             System.out.println(e);
         }
@@ -312,16 +312,16 @@ public class ReviewController {
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
-    @PostMapping("/searchMyZzim")
+    @GetMapping("/searchMyZzim")
     @ResponseBody
-    public ResponseEntity<CommonResponse> searchMyReview(@RequestBody ReviewSearchRequest reviewSearchRequest){
+    public ResponseEntity<CommonResponse> searchMyReview(@RequestParam(value = "userId") String userId){
         CommonResponse response = new CommonResponse();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         List<ReviewVo> reviewVoList = null;
         try {
-            reviewVoList = reviewService.searchMyZzim(reviewSearchRequest.getUserId());
+            reviewVoList = reviewService.searchMyZzim(Integer.parseInt(userId));
         } catch (Exception e){
             System.out.println(e);
         }
