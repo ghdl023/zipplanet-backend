@@ -82,10 +82,28 @@ public class UserController {
             response.setMessage("휴대폰 번호를 입력하지 않으셨습니다.");
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
         }
-
+        User username = null;
+        User phone = null;
         User user = null;
+        userSignupRequest.setPhone(userSignupRequest.getPhone().replaceAll("[^0-9]",""));
         try {
+            username = userService.findUniqueUsername(userSignupRequest.getUsername());
+            phone = userService.findUniquePhone(userSignupRequest.getPhone());
+            if (username != null){
+                response.setMessage("이미 사용중인 아이디입니다.");
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+            }
+            if (phone != null && phone.getDeleteYn() == 'N'){
+                response.setMessage("이미 사용중인 휴대폰번호입니다.");
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+            }
+            if (phone != null && phone.getDeleteYn() == 'Y'){
+                response.setMessage("탈퇴한 회원의 휴대폰번호입니다.");
+                response.setData(phone);
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+            }
             int result = userService.signUp(userSignupRequest);
+
             if(result > 0) { // insert 후 row 가져오기 (다른 방법이있을거야..)
                 user = userService.getUserByUsername(userSignupRequest.getUsername());
             }
@@ -93,9 +111,11 @@ public class UserController {
             System.out.println(e);
         }
 
+
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
         response.setData(user);
+
         if(user == null) {
             response.setMessage("회원가입을 실패했습니다.");
         }
@@ -109,7 +129,7 @@ public class UserController {
         CommonResponse response = new CommonResponse();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
+        userFindIdRequest.setPhone(userFindIdRequest.getPhone().replaceAll("[^0-9]",""));
         User user = null;
         try {
             user = userService.findId(userFindIdRequest);
@@ -133,7 +153,7 @@ public class UserController {
         CommonResponse response = new CommonResponse();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
+        userFindPwdRequest.setPhone(userFindPwdRequest.getPhone().replaceAll("[^0-9]",""));
         String pwd = null;
         try {
             pwd = userService.findPwd(userFindPwdRequest);
@@ -162,6 +182,7 @@ public class UserController {
         User username = null;
         User nickname = null;
         User phone = null;
+        userUpdateRequest.setPhone(userUpdateRequest.getPhone().replaceAll("[^0-9]",""));
         try {
             username = userService.findUniqueUsername(userUpdateRequest.getUsername());
             nickname = userService.findUniqueNickname(userUpdateRequest.getNickname());
@@ -204,7 +225,32 @@ public class UserController {
             result = userService.deleteUser(username);
 
             if (result == 0) {
-                response.setMessage("회원정보 탈퇴를 실패하였습니다.");
+                response.setMessage("회원탈퇴를 실패하였습니다.");
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+            }
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        response.setStatus(StatusEnum.OK);
+        response.setMessage("success");
+        response.setData(result);
+
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/comebackUser")
+    @ResponseBody
+    public ResponseEntity<CommonResponse> comebackUser(@RequestBody String username) {
+        CommonResponse response = new CommonResponse();
+        HttpHeaders headers= new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        int result = 0;
+        try {
+            result = userService.comebackUser(username);
+
+            if (result == 0) {
+                response.setMessage("계정복구를 실패하였습니다.");
                 return new ResponseEntity<>(response, headers, HttpStatus.OK);
             }
         } catch (Exception e){

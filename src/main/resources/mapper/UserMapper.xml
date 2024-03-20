@@ -48,6 +48,7 @@
         SELECT * FROM members
         WHERE 1=1
         AND PHONE = #{phone}
+        AND DELETE_YN = 'N'
     </select>
 
     <select id="findPwd" resultType="String">
@@ -55,6 +56,7 @@
         where 1=1
         and username = #{username}
         and phone = #{phone}
+        and delete_yn = 'N'
     </select>
 
     <update id="updateUser">
@@ -76,6 +78,14 @@
         update members set
         nickname = null,
         delete_yn = 'Y'
+        where 1=1
+        and username = #{username}
+    </update>
+
+    <update id="comebackUser">
+        update members set
+        nickname = null,
+        delete_yn = 'N'
         where 1=1
         and username = #{username}
     </update>
