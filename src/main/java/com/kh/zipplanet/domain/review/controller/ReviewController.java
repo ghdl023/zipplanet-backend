@@ -173,7 +173,7 @@ public class ReviewController {
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-//        System.out.println(reviewUpdateRequest);
+//        System.out.println(reviewDeleteRequest);
 
         int result = 0;
         try {
