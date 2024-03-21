@@ -56,7 +56,6 @@
         where 1=1
         and username = #{username}
         and phone = #{phone}
-        and delete_yn = 'N'
     </select>
 
     <update id="updateUser">
