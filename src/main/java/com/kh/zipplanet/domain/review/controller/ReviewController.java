@@ -145,9 +145,13 @@ public class ReviewController {
 
         int result = 0;
         try {
-            ReviewVo review = reviewService.checkDuplicateByUserIdAndPos(reviewUpdateRequest.getUserId(), reviewUpdateRequest.getPos());
+            ReviewVo origin = reviewService.findById(String.valueOf(reviewUpdateRequest.getReviewId()), String.valueOf(reviewUpdateRequest.getUserId()));
+            ReviewVo dupReview = null;
+            if(!origin.getPos().equals(reviewUpdateRequest.getPos())) {
+                dupReview = reviewService.checkDuplicateByUserIdAndPos(reviewUpdateRequest.getUserId(), reviewUpdateRequest.getPos());
+            }
 
-            if(review == null) { // 같은 지번주소에 대한 리뷰가 없는 경우
+            if(dupReview == null) { // 같은 지번주소에 대한 리뷰가 없는 경우
                 result = reviewService.updateReview(reviewUpdateRequest);
             } else {
                 response.setStatus(StatusEnum.OK);
