@@ -89,6 +89,11 @@ public class UserController {
         try {
             username = userService.findUniqueUsername(userSignupRequest.getUsername());
             phone = userService.findUniquePhone(userSignupRequest.getPhone());
+            if (phone != null && phone.getDeleteYn() == 'Y'){
+                response.setMessage("탈퇴한 회원의 휴대폰번호입니다.");
+                response.setData(phone);
+                return new ResponseEntity<>(response, headers, HttpStatus.OK);
+            }
             if (username != null){
                 response.setMessage("이미 사용중인 아이디입니다.");
                 return new ResponseEntity<>(response, headers, HttpStatus.OK);
@@ -97,11 +102,7 @@ public class UserController {
                 response.setMessage("이미 사용중인 휴대폰번호입니다.");
                 return new ResponseEntity<>(response, headers, HttpStatus.OK);
             }
-            if (phone != null && phone.getDeleteYn() == 'Y'){
-                response.setMessage("탈퇴한 회원의 휴대폰번호입니다.");
-                response.setData(phone);
-                return new ResponseEntity<>(response, headers, HttpStatus.OK);
-            }
+
             int result = userService.signUp(userSignupRequest);
 
             if(result > 0) { // insert 후 row 가져오기 (다른 방법이있을거야..)

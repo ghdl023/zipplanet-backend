@@ -75,7 +75,7 @@
 
     <update id="deleteUser">
         update members set
-        nickname = null,
+        nickname = #{username},
         delete_yn = 'Y'
         where 1=1
         and username = #{username}
@@ -83,7 +83,6 @@
 
     <update id="comebackUser">
         update members set
-        nickname = null,
         delete_yn = 'N'
         where 1=1
         and username = #{username}
