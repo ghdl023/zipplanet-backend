@@ -216,14 +216,14 @@ public class UserController {
 
     @PostMapping("/deleteUser")
     @ResponseBody
-    public ResponseEntity<CommonResponse> deleteUser(@RequestBody String username) {
+    public ResponseEntity<CommonResponse> deleteUser(@RequestBody User user) {
         CommonResponse response = new CommonResponse();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
+        System.out.println(user.getUsername());
         int result = 0;
         try {
-            result = userService.deleteUser(username);
+            result = userService.deleteUser(user.getUsername());
 
             if (result == 0) {
                 response.setMessage("회원탈퇴를 실패하였습니다.");
@@ -241,14 +241,14 @@ public class UserController {
 
     @PostMapping("/comebackUser")
     @ResponseBody
-    public ResponseEntity<CommonResponse> comebackUser(@RequestBody String username) {
+    public ResponseEntity<CommonResponse> comebackUser(@RequestBody User user) {
         CommonResponse response = new CommonResponse();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         int result = 0;
         try {
-            result = userService.comebackUser(username);
+            result = userService.comebackUser(user.getUsername());
 
             if (result == 0) {
                 response.setMessage("계정복구를 실패하였습니다.");
