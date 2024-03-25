@@ -27,7 +27,9 @@ public class EmailMessageController {
         CommonResponse response = new CommonResponse();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
+        int ranNum = (int)(Math.random() * 999999 + 100000);
+        emailMessage.setSubject("[집플래닛]집플래닛 회원 인증번호");
+        emailMessage.setMessage("인증번호 ["+ranNum+"]을 입력해주세요.");
         try {
             emailMessageService.sendMail(emailMessage);
         } catch (Exception e){
@@ -36,7 +38,7 @@ public class EmailMessageController {
 
         response.setStatus(StatusEnum.OK);
         response.setMessage("success");
-        response.setData("good");
+        response.setData(ranNum);
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }

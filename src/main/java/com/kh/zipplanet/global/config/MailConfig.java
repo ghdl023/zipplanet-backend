@@ -13,8 +13,8 @@ public class MailConfig {
     public JavaMailSender javaMailService(){
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("smtp.naver.com");
-        javaMailSender.setUsername("comet2667@naver.com");
-        javaMailSender.setPassword("");
+        javaMailSender.setUsername("zip-planet@naver.com");
+        javaMailSender.setPassword("zip!@8426");
 
         javaMailSender.setPort(465);
 

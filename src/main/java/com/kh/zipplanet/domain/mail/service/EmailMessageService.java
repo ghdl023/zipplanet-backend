@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class EmailMessageService {
 
     private final JavaMailSender javaMailSender;
-    private static final String ADMIN_ADDRESS = "comet2667@naver.com";
+    private static final String ADMIN_ADDRESS = "zip-planet@naver.com";
     @Async
     public void sendMail(EmailMessage emailMessage) throws Exception{
         SimpleMailMessage message = new SimpleMailMessage();
