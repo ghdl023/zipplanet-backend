@@ -55,6 +55,12 @@ dependencies {
 
 }
 
+bootJar{
+	archivesBaseName = 'zipplanet'
+	archiveFileName = 'zipplanet.jar'
+	archiveVersion = "1.0.0"
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
